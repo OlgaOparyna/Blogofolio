@@ -55,6 +55,10 @@
   font-size: 32px;
   line-height: 44px;
   color: $secondary;
+  &:hover {
+    cursor: pointer;
+    color: $primary-secondary;
+  }
 }
 .darkTitle {
   color: $white;

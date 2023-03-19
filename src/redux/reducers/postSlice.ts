@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { CardType } from "../../components/Card";
 import { RootState } from "../store";
+import { CardListType, CardType } from "../../utils/@globalTypes";
 
 type initialType = {
   selectedPost: CardType | null;
   isVisibleSelectedModal: boolean;
-  likePosts: CardType[];
-  dislikePosts: CardType[];
-  savedPosts: CardType[];
-  postsList: CardType[];
+  likePosts: CardListType;
+  dislikePosts: CardListType;
+  savedPosts: CardListType;
+  postsList: CardListType;
 };
 export enum LikeStatus {
   Like = "like",
@@ -29,7 +29,7 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     getAllPosts: (_, __: PayloadAction<undefined>) => {},
-    setAllPosts: (state, action: PayloadAction<CardType[]>) => {
+    setAllPosts: (state, action: PayloadAction<CardListType>) => {
       state.postsList = action.payload;
     },
     setSelectedPost: (state, action: PayloadAction<CardType | null>) => {

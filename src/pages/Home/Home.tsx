@@ -28,11 +28,11 @@ const TABS_LIST = [
 const Home = () => {
   const [activeTab, setActiveTab] = useState(TabsNames.ALL);
   const dispatch = useDispatch();
-  const postsList = useSelector(PostSelectors.getAllPosts)
+  const postsList = useSelector(PostSelectors.getAllPosts);
   const onTabClick = (key: TabsNames) => setActiveTab(key);
 
   useEffect(() => {
-    dispatch(getAllPosts())
+    dispatch(getAllPosts());
   }, []);
 
   return (
@@ -44,7 +44,7 @@ const Home = () => {
         onClick={onTabClick}
       />
       <CardsList cardsList={postsList} />
-      <SelectedPostModal/>
+      <SelectedPostModal />
     </div>
   );
 };

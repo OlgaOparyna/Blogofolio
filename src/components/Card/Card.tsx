@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { CardProps, CardSize } from "./types";
+import { CardProps} from "./types";
 import classNames from "classnames";
 import styles from "./Card.module.scss";
 import {
@@ -18,11 +18,14 @@ import {
   setSelectedPost,
   setStatus,
 } from "../../redux/reducers/postSlice";
+import { useNavigate } from "react-router-dom";
+import { CardSize } from "../../utils/@globalTypes";
 
 const Card: FC<CardProps> = ({ card, size }) => {
-  const { title, text, date, image } = card;
+  const { title, text, date, image, id } = card;
   const { theme } = useThemeContext();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isVisible = useSelector(PostSelectors.getVisibleSelectedModal);
   const likePosts = useSelector(PostSelectors.getLikePosts);
   const dislikePosts = useSelector(PostSelectors.getDislikePosts);
@@ -47,6 +50,9 @@ const Card: FC<CardProps> = ({ card, size }) => {
   const onBookmarkClick = () => {
     dispatch(setSavedPosts(card));
   };
+  const onTitleClick = ()=>{
+    navigate (`/blog/${id}`)
+  }
   return (
     <div
       className={classNames(styles.container, {
@@ -65,6 +71,7 @@ const Card: FC<CardProps> = ({ card, size }) => {
           <div className={styles.titleContainer}>
             <div className={styles.date}> {date}</div>
             <div
+              onClick={onTitleClick}
               className={classNames(styles.title, {
                 [styles.mediumTitle]: !isLarge,
                 [styles.darkTitle]: isDark,

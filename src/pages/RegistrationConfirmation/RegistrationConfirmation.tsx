@@ -1,10 +1,10 @@
 import React from "react";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
-import { ButtonType } from "../../components/Button/Button";
 import styles from "./RegistrationConfirmation.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 import classNames from "classnames";
+import { ButtonType } from "../../utils/@globalTypes";
 
 const RegistrationConfirmation = () => {
   const { theme } = useThemeContext();

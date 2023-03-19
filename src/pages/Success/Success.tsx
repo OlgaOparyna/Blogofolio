@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
-import { ButtonType } from "../../components/Button/Button";
+import { ButtonType } from "../../utils/@globalTypes";
 import styles from "./Success.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 import classNames from "classnames";

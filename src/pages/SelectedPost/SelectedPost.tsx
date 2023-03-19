@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import classNames from "classnames";
 import Button from "../../components/Button";
 import { BookmarkIcon, DislikeIcon, LikeIcon } from "../../assets/icons";
-import { ButtonType } from "../../components/Button/Button";
+
 import styles from "./SelectedPost.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
-import classNames from "classnames";
+import { getAllPosts } from "../../redux/reducers/postSlice";
+import { useDispatch } from "react-redux";
+import { ButtonType } from "../../utils/@globalTypes";
 
 const SelectedPost = () => {
   const { theme } = useThemeContext();
+  const dispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getSinglePost());
+  // }, []);
   const isDark = theme === Theme.Dark;
+  const params = useParams()
+  console.log('Id from URL', params?.id)
+
   return (
     <div className={classNames(styles.container, {
       [styles.darkContainer]: isDark,
@@ -19,7 +30,7 @@ const SelectedPost = () => {
         })}
         >Home</div>
         <div className={styles.line}>|</div>
-        <div className={styles.post_number}>Post 14278</div>
+        <div className={styles.post_number}>`Post 1`</div>
       </div>
       <div className={styles.mainblock}>
         <div className={classNames(styles.title, {
