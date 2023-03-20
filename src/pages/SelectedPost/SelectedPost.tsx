@@ -6,36 +6,48 @@ import { BookmarkIcon, DislikeIcon, LikeIcon } from "../../assets/icons";
 
 import styles from "./SelectedPost.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
-import { getAllPosts } from "../../redux/reducers/postSlice";
-import { useDispatch } from "react-redux";
+import { getAllPosts, getSinglePost, PostSelectors } from "../../redux/reducers/postSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { ButtonType } from "../../utils/@globalTypes";
 
 const SelectedPost = () => {
   const { theme } = useThemeContext();
-  const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getSinglePost());
-  // }, []);
   const isDark = theme === Theme.Dark;
-  const params = useParams()
-  console.log('Id from URL', params?.id)
+
+  const params = useParams();
+  const { id } = params;
+  console.log("Id from URL", params?.id);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (id) {
+      dispatch(getSinglePost(id));
+    }
+  }, []);
+  const singlePost = useSelector(PostSelectors.getSinglePost);
 
   return (
-    <div className={classNames(styles.container, {
-      [styles.darkContainer]: isDark,
-    })}>
+    <div
+      className={classNames(styles.container, {
+        [styles.darkContainer]: isDark,
+      })}
+    >
       <div className={styles.bread_crumbs}>
-        <div className={classNames(styles.home, {
-          [styles.darkHome]: isDark,
-        })}
-        >Home</div>
+        <div
+          className={classNames(styles.home, {
+            [styles.darkHome]: isDark,
+          })}
+        >
+          Home
+        </div>
         <div className={styles.line}>|</div>
         <div className={styles.post_number}>`Post 1`</div>
       </div>
       <div className={styles.mainblock}>
-        <div className={classNames(styles.title, {
-          [styles.darkTitle]: isDark,
-        })}>
+        <div
+          className={classNames(styles.title, {
+            [styles.darkTitle]: isDark,
+          })}
+        >
           Astronauts prep for new solar arrays on nearly seven-hour spacewalk
         </div>
         <img
@@ -43,9 +55,11 @@ const SelectedPost = () => {
           src="https://thumbs.dreamstime.com/b/environment-earth-day-hands-trees-growing-seedlings-bokeh-green-background-female-hand-holding-tree-nature-field-gra-130247647.jpg"
           alt=" "
         />
-        <p className={classNames(styles.text, {
-          [styles.darkText]: isDark,
-        })}>
+        <p
+          className={classNames(styles.text, {
+            [styles.darkText]: isDark,
+          })}
+        >
           Astronauts Kayla Barron and Raja Chari floated out of the
           International Space Station airlock for a spacewalk Tuesday,
           installing brackets and struts to support new solar arrays to upgrade
