@@ -34,13 +34,14 @@ const SignUp = () => {
         [styles.darkContainer]: isDark,
       })}
     >
-      <div
+      <NavLink
+        to={RoutesList.Home}
         className={classNames(styles.backHome, {
           [styles.darkBackHome]: isDark,
         })}
       >
         Back to home
-      </div>
+      </NavLink>
       <Title title={"Sign Up"} />
       <div className={styles.wrapper}>
         <div
@@ -89,7 +90,8 @@ const SignUp = () => {
               className={classNames(styles.navLink, {
                 [styles.darkNavLink]: isDark,
               })}
-              to={RoutesList.SignIn}>
+              to={RoutesList.SignIn}
+            >
               Sign In
             </NavLink>
           </div>

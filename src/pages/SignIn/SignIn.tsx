@@ -26,13 +26,13 @@ const SignIn = () => {
         [styles.darkContainer]: isDark,
       })}
     >
-      <div
+      <NavLink to={RoutesList.Home}
         className={classNames(styles.backHome, {
           [styles.darkBackHome]: isDark,
         })}
       >
         Back to home
-      </div>
+      </NavLink>
       <Title title={"Sign In"} />
       <div className={styles.wrapper}>
         <div
