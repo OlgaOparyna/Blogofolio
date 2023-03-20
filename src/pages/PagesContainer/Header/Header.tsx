@@ -2,12 +2,13 @@ import React, { useMemo, useState } from "react";
 import styles from "./Header.module.scss";
 import User from "../../../components/User";
 import Button from "../../../components/Button";
-import { CloseIcon, OpenedMenu, UserIcon } from "../../../assets/icons";
+import { UserIcon } from "../../../assets/icons";
 import ThemeSwitcher from "../../../components/ThemeSwitcher";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { RoutesList } from "../../Router";
 import classNames from "classnames";
 import { ButtonType } from "../../../utils/@globalTypes";
+import BurgerButton from "../../../components/Burger";
 
 const Header = () => {
   const [isOpened, setOpened] = useState(false);
@@ -38,12 +39,7 @@ const Header = () => {
   return (
     <>
       <div className={styles.container}>
-        <Button
-          title={isOpened ? <CloseIcon /> : <OpenedMenu />}
-          onClick={onBurgerClick}
-          type={ButtonType.Primary}
-          className={styles.burgerButton}
-        />
+        <BurgerButton isOpened={isOpened} onClick={onBurgerClick} />
         {isLoggedIn ? (<User userName={"Artem Malkin"} />): (<Button title={<UserIcon/>} onClick={onAuthButtonClick} type={ButtonType.Primary}/>)}
       </div>
       {isOpened && (
