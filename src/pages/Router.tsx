@@ -8,6 +8,8 @@ import Success from "./Success";
 import SignUp from "./SignUp";
 import RegistrationConfirmation from "./RegistrationConfirmation";
 import Page404 from "./Page404";
+import ResetPassword from "./ResetPassword";
+import NewPassword from "./NewPassword";
 
 export enum RoutesList {
   Home = "/",
@@ -18,6 +20,8 @@ export enum RoutesList {
   SignUp = "/blog/sing-up",
   Confirm = "/blog/sign-in/confirm",
   Success = "/blog/sign-up/success",
+  ResetPassword = "/blog/sign-up/reset-password",
+  NewPassword = "/blog/sign-up/new-password",
   Default = '*',
 }
 const Router = () => {
@@ -41,6 +45,8 @@ const Router = () => {
             element={<RegistrationConfirmation />}
           />
           <Route path={RoutesList.Success} element={<Success />} />
+          <Route path={RoutesList.ResetPassword} element={<ResetPassword />} />
+          <Route path={RoutesList.NewPassword} element={<NewPassword />} />
           <Route path={RoutesList.Default} element={<Page404/>} />
         </Route>
       </Routes>
