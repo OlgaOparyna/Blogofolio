@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Title from "../../components/Title";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -16,6 +16,11 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const { theme } = useThemeContext();
   const isDark = theme === Theme.Dark;
   const dispatch = useDispatch();
@@ -40,6 +45,50 @@ const SignUp = () => {
       })
     );
   };
+  useEffect(() => {
+    if (name.length === 0) {
+      setNameError("Name is required field");
+    } else {
+      setNameError("");
+    }
+  }, [name]);
+
+  useEffect(() => {
+    if (email.length === 0) {
+      setEmailError("Email is required field");
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords must match");
+    } else if (password.length === 0 || confirmPassword.length === 0) {
+      setPasswordError("Password is required field");
+    } else {
+      setPasswordError("");
+    }
+  }, [confirmPassword, password]);
+
+  const isValid = useMemo(() => {
+    return (
+      nameError.length === 0 &&
+      emailError.length === 0 &&
+      passwordError.length === 0
+    );
+  }, [nameError]);
+
+  // Используем, если не надо показывать никаких ошибок пользователю
+  // const isValid = useMemo(() => {
+  //   return (
+  //     name.length > 0 &&
+  //     email.length > 0 &&
+  //     password.length > 0 &&
+  //     confirmPassword.length > 0 &&
+  //     password === confirmPassword
+  //   );
+  // }, [name, email, password, confirmPassword]);
   return (
     <div
       className={classNames(styles.container, {
@@ -66,12 +115,14 @@ const SignUp = () => {
             value={name}
             onChange={onChangeName}
             placeholder={"Your name"}
+            errorText={nameError}
           />
           <Input
             title={"Email"}
             value={email}
             onChange={onChangeEmail}
             placeholder={"Your email"}
+            errorText={emailError}
           />
           <Input
             title={"Password"}
@@ -79,6 +130,7 @@ const SignUp = () => {
             onChange={onChangePassword}
             placeholder={"Your password"}
             type={"password"}
+            errorText={passwordError}
           />
           <Input
             title={"Confirm password"}
@@ -86,10 +138,12 @@ const SignUp = () => {
             onChange={onChangeConfirmPassword}
             placeholder={"Confirm password"}
             type={"password"}
+            errorText={passwordError}
           />
           <div className={styles.button}>
             <Button
               title={"Sign Up"}
+              disabled={!isValid}
               onClick={onSignUpClick}
               type={ButtonType.Primary}
             />
