@@ -10,6 +10,7 @@ import { RoutesList } from "../Router";
 import { ButtonType } from "../../utils/@globalTypes";
 import { useDispatch } from "react-redux";
 import { signUpUser } from "../../redux/reducers/authSlice";
+import FormContainer from "../../components/FormContainer";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -90,26 +91,11 @@ const SignUp = () => {
   //   );
   // }, [name, email, password, confirmPassword]);
   return (
-    <div
-      className={classNames(styles.container, {
-        [styles.darkContainer]: isDark,
-      })}
+    <FormContainer
+      title={"Sign Up"}
+      textButton={"Sign Up"}
+      onButtonClick={onSignUpClick}
     >
-      <NavLink
-        to={RoutesList.Home}
-        className={classNames(styles.backHome, {
-          [styles.darkBackHome]: isDark,
-        })}
-      >
-        Back to home
-      </NavLink>
-      <Title title={"Sign Up"} />
-      <div className={styles.wrapper}>
-        <div
-          className={classNames(styles.inputContainer, {
-            [styles.darkInputContainer]: isDark,
-          })}
-        >
           <Input
             title={"Name"}
             value={name}
@@ -163,9 +149,7 @@ const SignUp = () => {
               Sign In
             </NavLink>
           </div>
-        </div>
-      </div>
-    </div>
+    </FormContainer>
   );
 };
 export default SignUp;
