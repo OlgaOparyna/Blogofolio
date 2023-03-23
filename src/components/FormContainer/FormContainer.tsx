@@ -14,6 +14,8 @@ const FormContainer: FC<FormContainerType> = ({
   children,
   textButton,
   onButtonClick,
+  submitBtnDisabled,
+  footerContent,
 }) => {
   const { theme } = useThemeContext();
   const isDark = theme === Theme.Dark;
@@ -43,9 +45,11 @@ const FormContainer: FC<FormContainerType> = ({
             <Button
               title={textButton}
               onClick={onButtonClick}
+              disabled={submitBtnDisabled}
               type={ButtonType.Primary}
             />
           </div>
+          {footerContent && <>{footerContent}</>}
         </div>
       </div>
     </div>

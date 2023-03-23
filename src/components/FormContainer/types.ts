@@ -5,4 +5,6 @@ export type FormContainerType = {
   children: ReactNode,
   textButton?: string,
   onButtonClick: ()=>void,
+  submitBtnDisabled?: boolean,
+  footerContent?: ReactNode,
 }

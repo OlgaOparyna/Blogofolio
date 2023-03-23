@@ -1,13 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Title from "../../components/Title";
 import Input from "../../components/Input";
-import Button from "../../components/Button";
 import styles from "./SignUp.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RoutesList } from "../Router";
-import { ButtonType } from "../../utils/@globalTypes";
 import { useDispatch } from "react-redux";
 import { signUpUser } from "../../redux/reducers/authSlice";
 import FormContainer from "../../components/FormContainer";
@@ -78,7 +75,7 @@ const SignUp = () => {
       emailError.length === 0 &&
       passwordError.length === 0
     );
-  }, [nameError]);
+  }, [nameError, emailError, passwordError]);
 
   // Используем, если не надо показывать никаких ошибок пользователю
   // const isValid = useMemo(() => {
@@ -95,60 +92,55 @@ const SignUp = () => {
       title={"Sign Up"}
       textButton={"Sign Up"}
       onButtonClick={onSignUpClick}
-    >
-          <Input
-            title={"Name"}
-            value={name}
-            onChange={onChangeName}
-            placeholder={"Your name"}
-            errorText={nameError}
-          />
-          <Input
-            title={"Email"}
-            value={email}
-            onChange={onChangeEmail}
-            placeholder={"Your email"}
-            errorText={emailError}
-          />
-          <Input
-            title={"Password"}
-            value={password}
-            onChange={onChangePassword}
-            placeholder={"Your password"}
-            type={"password"}
-            errorText={passwordError}
-          />
-          <Input
-            title={"Confirm password"}
-            value={confirmPassword}
-            onChange={onChangeConfirmPassword}
-            placeholder={"Confirm password"}
-            type={"password"}
-            errorText={passwordError}
-          />
-          <div className={styles.button}>
-            <Button
-              title={"Sign Up"}
-              disabled={!isValid}
-              onClick={onSignUpClick}
-              type={ButtonType.Primary}
-            />
-          </div>
-          <div
-            className={classNames(styles.singIn, {
-              [styles.darkSingIn]: isDark,
+      footerContent={
+        <div
+          className={classNames(styles.singIn, {
+            [styles.darkSingIn]: isDark,
+          })}
+        >
+          Already have an account?
+          <NavLink
+            className={classNames(styles.navLink, {
+              [styles.darkNavLink]: isDark,
             })}
+            to={RoutesList.SignIn}
           >
-            Already have an account?
-            <NavLink
-              className={classNames(styles.navLink, {
-                [styles.darkNavLink]: isDark,
-              })}
-              to={RoutesList.SignIn}
-            >
-              Sign In
-            </NavLink>
-          </div>
+            Sign In
+          </NavLink>
+        </div>
+      }
+      submitBtnDisabled={!isValid}
+    >
+      <Input
+        title={"Name"}
+        value={name}
+        onChange={onChangeName}
+        placeholder={"Your name"}
+        errorText={nameError}
+      />
+      <Input
+        title={"Email"}
+        value={email}
+        onChange={onChangeEmail}
+        placeholder={"Your email"}
+        errorText={emailError}
+      />
+      <Input
+        title={"Password"}
+        value={password}
+        onChange={onChangePassword}
+        placeholder={"Your password"}
+        type={"password"}
+        errorText={passwordError}
+      />
+      <Input
+        title={"Confirm password"}
+        value={confirmPassword}
+        onChange={onChangeConfirmPassword}
+        placeholder={"Confirm password"}
+        type={"password"}
+        errorText={passwordError}
+      />
     </FormContainer>
   );
 };

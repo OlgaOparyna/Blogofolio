@@ -9,14 +9,18 @@ const ResetPassword = () => {
   };
 
   return (
-    <FormContainer title={"Reset password"} textButton={"Reset"} onButtonClick={() => {}}>
-          <Input
-            title={"Email"}
-            value={email}
-            onChange={onChangeEmail}
-            placeholder={"Your email"}
-          />
-      </FormContainer>
+    <FormContainer
+      title={"Reset password"}
+      textButton={"Reset"}
+      onButtonClick={() => {}}
+    >
+      <Input
+        title={"Email"}
+        value={email}
+        onChange={onChangeEmail}
+        placeholder={"Your email"}
+      />
+    </FormContainer>
   );
 };
 export default ResetPassword;
