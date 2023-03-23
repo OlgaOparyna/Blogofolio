@@ -5,15 +5,21 @@ import Button from "../../components/Button";
 import styles from "./SignUp.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 import classNames from "classnames";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { RoutesList } from "../Router";
 import { ButtonType } from "../../utils/@globalTypes";
+import { useDispatch } from "react-redux";
+import { signUpUser } from "../../redux/reducers/authSlice";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { theme } = useThemeContext();
+  const isDark = theme === Theme.Dark;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onChangeName = (value: string) => {
     setName(value);
   };
@@ -26,8 +32,14 @@ const SignUp = () => {
   const onChangeConfirmPassword = (value: string) => {
     setConfirmPassword(value);
   };
-  const { theme } = useThemeContext();
-  const isDark = theme === Theme.Dark;
+  const onSignUpClick = () => {
+    dispatch(
+      signUpUser({
+        data: { username: name, email, password },
+        callback: () => navigate(RoutesList.SignIn),
+      })
+    );
+  };
   return (
     <div
       className={classNames(styles.container, {
@@ -66,17 +78,19 @@ const SignUp = () => {
             value={password}
             onChange={onChangePassword}
             placeholder={"Your password"}
+            type={"password"}
           />
           <Input
             title={"Confirm password"}
             value={confirmPassword}
             onChange={onChangeConfirmPassword}
             placeholder={"Confirm password"}
+            type={"password"}
           />
           <div className={styles.button}>
             <Button
               title={"Sign Up"}
-              onClick={() => {}}
+              onClick={onSignUpClick}
               type={ButtonType.Primary}
             />
           </div>

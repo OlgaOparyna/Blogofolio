@@ -5,16 +5,27 @@ import styles from "./RegistrationConfirmation.module.scss";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 import classNames from "classnames";
 import { ButtonType } from "../../utils/@globalTypes";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { RoutesList } from "../Router";
+import { useDispatch } from "react-redux";
+import { activateUser } from "../../redux/reducers/authSlice";
 
 const RegistrationConfirmation = () => {
   const { theme } = useThemeContext();
   const isDark = theme === Theme.Dark;
   const navigate = useNavigate();
-  const onHomeClick = ()=>{
-    navigate ("/")
-  }
+  const dispatch = useDispatch();
+  const { uid, token } = useParams();
+  const onConfirmButtonClick = () => {
+    if (uid && token) {
+      dispatch(
+        activateUser({
+          data: { uid, token },
+          callback: () => navigate(RoutesList.Success),
+        })
+      );
+    }
+  };
   return (
     <div
       className={classNames(styles.container, {
@@ -42,13 +53,12 @@ const RegistrationConfirmation = () => {
             })}
           >
             Please activate your account with the activation link in the email
-            example@gmail.com.
-            <br /> Please, check your email
+            Please, check your email
           </div>
           <div className={styles.button}>
             <Button
-              title={"Go to home"}
-              onClick={onHomeClick}
+              title={"Confirm"}
+              onClick={onConfirmButtonClick}
               type={ButtonType.Primary}
             />
           </div>

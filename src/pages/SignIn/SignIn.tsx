@@ -51,6 +51,7 @@ const SignIn = () => {
             value={password}
             onChange={onChangePassword}
             placeholder={"Your password"}
+            type={password}
           />
           <div
             className={classNames(styles.forgotPassword, {

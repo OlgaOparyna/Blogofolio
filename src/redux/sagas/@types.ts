@@ -6,3 +6,9 @@ export type AllPostsResponse = {
   previous: string;
   results: CardListType;
 };
+
+export type SingUpUserResponse = {
+  username: string;
+  email: string;
+  id: number;
+};

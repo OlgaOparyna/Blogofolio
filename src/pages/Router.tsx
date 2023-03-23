@@ -18,7 +18,7 @@ export enum RoutesList {
   AddPost = "/blog/add",
   SignIn = "/blog/sign-in",
   SignUp = "/blog/sing-up",
-  Confirm = "/blog/sign-in/confirm",
+  Confirm = "/activate/:uid/:token",
   Success = "/blog/sign-up/success",
   ResetPassword = "/blog/sign-up/reset-password",
   NewPassword = "/blog/sign-up/new-password",
