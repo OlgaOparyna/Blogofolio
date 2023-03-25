@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { AuthSelectors } from "src/redux/reducers/authSlice";
 import PagesContainer from "./PagesContainer";
 import SignIn from "./SignIn";
 import Home from "./Home";
@@ -25,7 +28,7 @@ export enum RoutesList {
   Default = '*',
 }
 const Router = () => {
-  const isLoggedIn = false;
+  const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
   return (
     <BrowserRouter>
       <Routes>

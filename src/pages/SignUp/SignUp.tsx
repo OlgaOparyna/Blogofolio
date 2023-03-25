@@ -1,13 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
-import Input from "../../components/Input";
+import Input from "src/components/Input";
 import styles from "./SignUp.module.scss";
-import { Theme, useThemeContext } from "../../context/Theme/Context";
+import { Theme, useThemeContext } from "src/context/Theme/Context";
 import classNames from "classnames";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RoutesList } from "../Router";
 import { useDispatch } from "react-redux";
-import { signUpUser } from "../../redux/reducers/authSlice";
-import FormContainer from "../../components/FormContainer";
+import { signUpUser } from "src/redux/reducers/authSlice";
+import FormContainer from "src/components/FormContainer";
 
 const SignUp = () => {
   const [name, setName] = useState("");

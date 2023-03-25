@@ -12,3 +12,8 @@ export type SingUpUserResponse = {
   email: string;
   id: number;
 };
+
+export type SingInResponse = {
+  access: string;
+  refresh: string;
+};
