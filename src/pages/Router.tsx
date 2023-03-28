@@ -13,6 +13,7 @@ import RegistrationConfirmation from "./RegistrationConfirmation";
 import Page404 from "./Page404";
 import ResetPassword from "./ResetPassword";
 import NewPassword from "./NewPassword";
+import ResetPasswordAccept from "src/pages/ResetPasswordAccept";
 
 export enum RoutesList {
   Home = "/",
@@ -24,6 +25,7 @@ export enum RoutesList {
   Confirm = "/activate/:uid/:token",
   Success = "/blog/sign-up/success",
   ResetPassword = "/blog/sign-up/reset-password",
+  ResetPasswordAccept = "/blog/sign-up/reset-password-accept",
   NewPassword = "/blog/sign-up/new-password",
   Default = "*",
 }
@@ -56,6 +58,7 @@ const Router = () => {
           />
           <Route path={RoutesList.Success} element={<Success />} />
           <Route path={RoutesList.ResetPassword} element={<ResetPassword />} />
+          <Route path={RoutesList.ResetPasswordAccept} element={<ResetPasswordAccept />} />
           <Route path={RoutesList.NewPassword} element={<NewPassword />} />
           <Route path={RoutesList.Default} element={<Page404 />} />
         </Route>
