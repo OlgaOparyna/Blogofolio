@@ -20,6 +20,7 @@ const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch()
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
+  const userName = useSelector(AuthSelectors.getUserName);
   const onBurgerClick = () => setOpened(!isOpened);
   const onAuthButtonClick = () => {
     navigate(RoutesList.SignIn);
@@ -48,12 +49,12 @@ const Header = () => {
     <>
       <div className={styles.container}>
         <BurgerButton isOpened={isOpened} onClick={onBurgerClick} />
-        {isLoggedIn ? (<User userName={"Artem Malkin"} />): (<Button title={<UserIcon/>} onClick={onAuthButtonClick} type={ButtonType.Primary}/>)}
+        {isLoggedIn && userName ? (<User userName={userName.username} />): (<Button title={<UserIcon/>} onClick={onAuthButtonClick} type={ButtonType.Primary}/>)}
       </div>
       {isOpened && (
         <div className={styles.menuContainer}>
           <div className={styles.actionsContainer}>
-            {isLoggedIn && <User userName={"Artem Malkin"} />}
+            {isLoggedIn && userName  && <User userName={userName.username}/>}
             {navButtonsList.map(({ key, title }) => {
               return (
                 <NavLink

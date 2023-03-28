@@ -2,9 +2,20 @@ import { takeLatest, all, call, put } from "redux-saga/effects";
 import { ApiResponse } from "apisauce";
 
 import { PayloadAction } from "@reduxjs/toolkit";
-import { SingInResponse, SingUpUserResponse } from "./@types";
+import {
+  GetUserInfoResponse,
+  SingInResponse,
+  SingUpUserResponse,
+} from "./@types";
 import API from "../api";
-import { activateUser, logoutUser, setLoggedIn, signInUser, signUpUser } from "../reducers/authSlice";
+import {
+  activateUser,
+  logoutUser,
+  setLoggedIn,
+  signInUser,
+  signUpUser,
+  getUserInfo, setUserInfo
+} from "../reducers/authSlice";
 import {
   ActivateUserPayload,
   SignInUserPayload,
@@ -38,29 +49,45 @@ function* activateUserWorker(action: PayloadAction<ActivateUserPayload>) {
 }
 function* signInUserWorker(action: PayloadAction<SignInUserPayload>) {
   const { data, callback } = action.payload;
-  const { ok, problem, data: responseData }: ApiResponse<SingInResponse> = yield call(
-    API.signInUser,
-    data);
+  const {
+    ok,
+    problem,
+    data: responseData,
+  }: ApiResponse<SingInResponse> = yield call(API.signInUser, data);
   if (ok && responseData) {
-    localStorage.setItem(ACCESS_TOKEN_KEY, responseData?.access)
-    localStorage.setItem(REFRESH_TOKEN_KEY, responseData?.refresh)
+    localStorage.setItem(ACCESS_TOKEN_KEY, responseData?.access);
+    localStorage.setItem(REFRESH_TOKEN_KEY, responseData?.refresh);
     callback();
-    yield put(setLoggedIn(true))
+    yield put(setLoggedIn(true));
   } else {
     console.warn("Error activate user", problem);
   }
 }
-
-function* logoutUserWorker (){
-  localStorage.removeItem(ACCESS_TOKEN_KEY)
-  localStorage.removeItem(REFRESH_TOKEN_KEY)
-  yield put(setLoggedIn(false))
+function* getUserInfoWorker() {
+  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+  if (accessToken) {
+     const { ok, problem, data}: ApiResponse<GetUserInfoResponse> = yield call(
+      API.getUserInfo,
+      accessToken
+    );
+    if (ok && data) {
+     yield put(setUserInfo(data));
+    } else {
+      console.warn("Error get information user", problem);
+    }
+  }
+}
+function* logoutUserWorker() {
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
+  yield put(setLoggedIn(false));
 }
 export default function* authSaga() {
   yield all([
     takeLatest(signUpUser, signUpUserWorker),
     takeLatest(activateUser, activateUserWorker),
     takeLatest(signInUser, signInUserWorker),
+    takeLatest(getUserInfo, getUserInfoWorker),
     takeLatest(logoutUser, logoutUserWorker),
   ]);
 }

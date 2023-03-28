@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { AuthSelectors } from "src/redux/reducers/authSlice";
+import { AuthSelectors, getUserInfo } from "src/redux/reducers/authSlice";
 import PagesContainer from "./PagesContainer";
 import SignIn from "./SignIn";
 import Home from "./Home";
@@ -25,10 +25,17 @@ export enum RoutesList {
   Success = "/blog/sign-up/success",
   ResetPassword = "/blog/sign-up/reset-password",
   NewPassword = "/blog/sign-up/new-password",
-  Default = '*',
+  Default = "*",
 }
 const Router = () => {
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getUserInfo());
+    }
+  }, [isLoggedIn]);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -50,7 +57,7 @@ const Router = () => {
           <Route path={RoutesList.Success} element={<Success />} />
           <Route path={RoutesList.ResetPassword} element={<ResetPassword />} />
           <Route path={RoutesList.NewPassword} element={<NewPassword />} />
-          <Route path={RoutesList.Default} element={<Page404/>} />
+          <Route path={RoutesList.Default} element={<Page404 />} />
         </Route>
       </Routes>
     </BrowserRouter>
