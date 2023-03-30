@@ -3,11 +3,11 @@ import styles from "./Header.module.scss";
 import User from "../../../components/User";
 import Button from "../../../components/Button";
 import { CloseIcon, OpenedMenu, UserIcon } from "../../../assets/icons";
-import { ButtonType } from "../../../components/Button/Button";
 import ThemeSwitcher from "../../../components/ThemeSwitcher";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { RoutesList } from "../../Router";
 import classNames from "classnames";
+import { ButtonType } from "../../../utils/@globalTypes";
 
 const Header = () => {
   const [isOpened, setOpened] = useState(false);

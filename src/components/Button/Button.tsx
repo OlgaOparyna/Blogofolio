@@ -2,12 +2,8 @@ import React, { FC, ReactNode } from "react";
 import classNames from "classnames";
 
 import styles from "./Button.module.scss";
+import { ButtonType } from "../../utils/@globalTypes";
 
-export enum ButtonType {
-  Primary = "Primary",
-  Secondary = "Secondary",
-  Error = "Error",
-}
 
 type ButtonProps = {
   title: string | ReactNode;

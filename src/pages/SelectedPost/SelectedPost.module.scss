@@ -2,6 +2,9 @@
 
 .container {
   margin-bottom: 72px;
+  //@media screen and (max-width: 1080px){
+  //  background-color: red;
+  //}
 }
 .darkContainer{
   background-color: $secondary;

@@ -1,6 +1,6 @@
 @import "src/assets/colors";
 
-.container{
+.container {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -10,88 +10,98 @@
   max-width: 736px;
   height: 451px;
   box-sizing: border-box;
- }
-.mediumContainer{
+}
+.mediumContainer {
   max-width: 352px;
   gap: 27px;
 }
-.smallContainer{
+.smallContainer {
   max-width: 354px;
   height: 206px;
   gap: 18px;
 }
-.darkContainer{
+.darkContainer {
   border-bottom-color: $gray;
 }
-.infoContainer{
+.infoContainer {
   display: flex;
   justify-content: space-between;
 }
-.mediumInfoContainer{
+.mediumInfoContainer {
   flex-direction: column-reverse;
   gap: 24px;
 }
-.smallInfoContainer{
+.smallInfoContainer {
   gap: 34px;
 }
-.mainInfoContainer{
+.mainInfoContainer {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
-.titleContainer{
+.titleContainer {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.date{
+.date {
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: $gray;
 }
-.title{
+.title {
   font-weight: 700;
   font-size: 32px;
   line-height: 44px;
   color: $secondary;
+  &:hover {
+    cursor: pointer;
+    color: $primary-secondary;
+  }
 }
-.darkTitle{
+.darkTitle {
   color: $white;
 }
-.mediumTitle{
+.mediumTitle {
   font-weight: 600;
   font-size: 18px;
   line-height: 28px;
 }
-.text{
+.text {
   ont-weight: 400;
   font-size: 16px;
   line-height: 28px;
   color: $gray;
 }
-.image{
+.image {
   max-width: 256px;
   max-height: 244px;
   object-fit: cover;
 }
-.mediumImage{
+.mediumImage {
   max-width: 352px;
   max-height: 246px;
 }
-.smallImage{
+.smallImage {
   max-width: 96px;
   max-height: 96px;
 }
-.footer{
+.footer {
   display: flex;
   justify-content: space-between;
 }
-.iconContainer{
+.iconContainer {
   display: flex;
   gap: 24px;
+  div:hover {
+    cursor: pointer;
+    svg > path {
+      fill: $primary-secondary;
+    }
+  }
 }
-.darkIconContainer{
+.darkIconContainer {
   div > svg > path {
     fill: $white;
   }
