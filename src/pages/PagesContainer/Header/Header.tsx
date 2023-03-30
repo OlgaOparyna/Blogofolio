@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import styles from "./Header.module.scss";
 import User from "../../../components/User";
 import Button from "../../../components/Button";
-import { CloseIcon, OpenedMenu } from "../../../assets/icons";
+import { CloseIcon, OpenedMenu, UserIcon } from "../../../assets/icons";
 import { ButtonType } from "../../../components/Button/Button";
 import ThemeSwitcher from "../../../components/ThemeSwitcher";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
@@ -12,7 +12,8 @@ import classNames from "classnames";
 const Header = () => {
   const [isOpened, setOpened] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation()
+  const location = useLocation();
+  const isLoggedIn = false;
   const onBurgerClick = () => setOpened(!isOpened);
   const onAuthButtonClick = () => {
     navigate(RoutesList.SignIn);
@@ -23,12 +24,16 @@ const Header = () => {
         title: "Home",
         key: RoutesList.Home,
       },
-      {
-        title: "Add Post",
-        key: RoutesList.AddPost,
-      },
+      ...(!isLoggedIn
+        ? []
+        : [
+            {
+              title: "Add Post",
+              key: RoutesList.AddPost,
+            },
+          ]),
     ],
-    []
+    [isLoggedIn]
   );
   return (
     <>
@@ -39,12 +44,12 @@ const Header = () => {
           type={ButtonType.Primary}
           className={styles.burgerButton}
         />
-        <User userName={"Artem Malkin"} />
+        {isLoggedIn ? (<User userName={"Artem Malkin"} />): (<Button title={<UserIcon/>} onClick={onAuthButtonClick} type={ButtonType.Primary}/>)}
       </div>
       {isOpened && (
         <div className={styles.menuContainer}>
           <div className={styles.actionsContainer}>
-            <User userName={'Artem Malkin'}/>
+            {isLoggedIn && <User userName={"Artem Malkin"} />}
             {navButtonsList.map(({ key, title }) => {
               return (
                 <NavLink
@@ -62,8 +67,8 @@ const Header = () => {
           <div>
             <ThemeSwitcher />
             <Button
-              title={"Sign In"}
-              onClick={onAuthButtonClick}
+              title={isLoggedIn ? "Log Out" : "Sign In"}
+              onClick={isLoggedIn ? ()=>{} : onAuthButtonClick}
               type={ButtonType.Secondary}
               className={styles.authButton}
             />

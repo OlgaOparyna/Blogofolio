@@ -22,22 +22,37 @@
   border: 1px solid $medium;
   padding: 0 40px;
   width: 544px;
+  margin-bottom: 72px;
 }
 .darkInputContainer{
   border-color: $gray;
-}
-.text {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: $secondary;
-  padding-top: 40px;
-}
-.darkText{
-  color: $white;
+
 }
 .button {
   text-align: center;
-  margin: 48px 0 40px;
+  margin-top: 48px;
   width: 544px;
+}
+.singIn {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: $gray;
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 40px;
+}
+.darkSingIn{
+  color:$medium;
+}
+.navLink {
+  margin-left: 4px;
+  text-decoration: none;
+  color: $primary;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.darkNavLink{
+  color: $primary-secondary;
 }
