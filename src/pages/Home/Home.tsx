@@ -5,6 +5,7 @@ import Tabs from "../../components/Tabs";
 import CardsList from "../../components/CardList";
 import { CardType } from "../../components/Card";
 import { TabsNames } from "../../components/Tabs/types";
+import SelectedPostModal from "./SelectedPostModal";
 
 const MOCK_ARRAY = [
   {
@@ -188,6 +189,7 @@ const Home = () => {
         onClick={onTabClick}
       />
       <CardsList cardsList={MOCK_ARRAY} />
+      <SelectedPostModal/>
     </div>
   );
 };

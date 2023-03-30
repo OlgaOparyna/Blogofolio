@@ -7,6 +7,9 @@
   line-height: 24px;
   box-sizing: border-box;
   border: 1px solid transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover{
     cursor: pointer;
   }

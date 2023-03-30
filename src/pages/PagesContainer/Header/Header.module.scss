@@ -11,11 +11,11 @@
   margin-bottom: 40px;
 }
 .burgerButton {
-  padding: 28px;
+  padding: 30px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  &:hover {
+    &:hover {
     background-color: $primary;
   }
 }
@@ -58,4 +58,4 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
+  }
