@@ -22,6 +22,7 @@ import {
   SignUpUserPayload,
 } from "../reducers/@types";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "src/utils/constants";
+import callCheckingAuth from "src/redux/sagas/callCheckingAuth";
 
 function* signUpUserWorker(action: PayloadAction<SignUpUserPayload>) {
   const { data, callback } = action.payload;
@@ -66,7 +67,7 @@ function* signInUserWorker(action: PayloadAction<SignInUserPayload>) {
 function* getUserInfoWorker() {
   const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
   if (accessToken) {
-     const { ok, problem, data}: ApiResponse<GetUserInfoResponse> = yield call(
+     const { ok, problem, data}: ApiResponse<GetUserInfoResponse> = yield callCheckingAuth(
       API.getUserInfo,
       accessToken
     );

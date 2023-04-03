@@ -26,11 +26,19 @@ const getUserInfo = (token: string) =>{
     }
   })
 }
+const verifyToken = (token: string) =>{
+  return API.post("/auth/jwt/verify/", {token})
+}
+const refreshToken = (refresh: string) =>{
+  return API.post("/auth/jwt/verify/", {refresh})
+}
 export default {
   getPosts,
   getSinglePost,
   signUpUser,
   activateUser,
   signInUser,
-  getUserInfo
+  getUserInfo,
+  verifyToken,
+  refreshToken
 }
