@@ -65,18 +65,13 @@ function* signInUserWorker(action: PayloadAction<SignInUserPayload>) {
   }
 }
 function* getUserInfoWorker() {
-  const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-  if (accessToken) {
      const { ok, problem, data}: ApiResponse<GetUserInfoResponse> = yield callCheckingAuth(
-      API.getUserInfo,
-      accessToken
-    );
+      API.getUserInfo);
     if (ok && data) {
      yield put(setUserInfo(data));
     } else {
       console.warn("Error get information user", problem);
     }
-  }
 }
 function* logoutUserWorker() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);

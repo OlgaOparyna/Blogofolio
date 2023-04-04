@@ -1,5 +1,5 @@
 import {create} from "apisauce";
-import { ActivateUserData, SignInUserData, SignInUserPayload, UserPayloadData } from "../reducers/@types";
+import { ActivateUserData, SignInUserData, UserPayloadData } from "../reducers/@types";
 
 const API = create({
   baseURL: "https://studapi.teachmeskills.by",
@@ -26,6 +26,13 @@ const getUserInfo = (token: string) =>{
     }
   })
 }
+const getMyPosts = (token: string)=>{
+  return API.get("/blog/posts/my_posts/", {}, {
+    headers:{
+      Authorization: `Bearer ${token}`,
+    }
+  })
+}
 const verifyToken = (token: string) =>{
   return API.post("/auth/jwt/verify/", {token})
 }
@@ -40,5 +47,6 @@ export default {
   signInUser,
   getUserInfo,
   verifyToken,
-  refreshToken
+  refreshToken,
+  getMyPosts
 }

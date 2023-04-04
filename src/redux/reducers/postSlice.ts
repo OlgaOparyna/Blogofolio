@@ -11,6 +11,7 @@ type initialType = {
   savedPosts: CardListType;
   postsList: CardListType;
   singlePost: CardType | null;
+  myPosts: CardListType
 };
 export enum LikeStatus {
   Like = "like",
@@ -24,6 +25,7 @@ const initialState: initialType = {
   savedPosts: [],
   postsList: [],
   singlePost: null,
+  myPosts: [],
 };
 
 const postSlice = createSlice({
@@ -33,6 +35,10 @@ const postSlice = createSlice({
     getAllPosts: (_, __: PayloadAction<undefined>) => {},
     setAllPosts: (state, action: PayloadAction<CardListType>) => {
       state.postsList = action.payload;
+    },
+    getMyPosts: (_, __: PayloadAction<undefined>) => {},
+    setMyPosts: (state, action: PayloadAction<CardListType>) => {
+      state.myPosts = action.payload;
     },
     getSinglePost: (_, __: PayloadAction<string>) => {},
     setSinglePost: (state, action: PayloadAction<CardType>) => {
@@ -96,6 +102,8 @@ export const {
   setAllPosts,
   getSinglePost,
   setSinglePost,
+  getMyPosts,
+  setMyPosts,
 } = postSlice.actions;
 export default postSlice.reducer;
 export const PostSelectors = {
@@ -107,4 +115,5 @@ export const PostSelectors = {
   getSavedPosts: (state: RootState) => state.posts.savedPosts,
   getAllPosts: (state: RootState) => state.posts.postsList,
   getSinglePost: (state: RootState) => state.posts.singlePost,
+  getMyPosts: (state: RootState) => state.posts.myPosts,
 };
