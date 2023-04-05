@@ -85,13 +85,13 @@
   color: $gray;
 }
 .image {
-  max-width: 256px;
-  max-height: 244px;
+  width: 256px;
+  height: 244px;
   object-fit: cover;
 }
 .mediumImage {
-  max-width: 352px;
-  max-height: 246px;
+  width: 352px;
+  height: 246px;
 }
 .smallImage {
   width: 96px;

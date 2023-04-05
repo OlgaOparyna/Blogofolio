@@ -1,22 +1,34 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Title from "../../components/Title";
-import Tabs from "../../components/Tabs";
-import CardsList from "../../components/CardList";
-import { TabsNames } from "../../components/Tabs/types";
-import SelectedPostModal from "./SelectedPostModal";
-import { getAllPosts, PostSelectors } from "../../redux/reducers/postSlice";
+import ReactPaginate from "react-paginate";
+import classNames from "classnames";
+
+import Title from "src/components/Title";
+import Tabs from "src/components/Tabs";
+import CardsList from "src/components/CardList";
+import { TabsNames } from "src/components/Tabs/types";
+import { getAllPosts, PostSelectors } from "src/redux/reducers/postSlice";
 import { AuthSelectors } from "src/redux/reducers/authSlice";
+
+import SelectedPostModal from "./SelectedPostModal";
+import styles from "./Home.module.scss"
+import { PER_PAGE } from "src/utils/constants";
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState(TabsNames.ALL);
+  const [currentPage, setCurrentPage] = useState(1);
   const dispatch = useDispatch();
   const postsList = useSelector(PostSelectors.getAllPosts);
   const likePostsList = useSelector(PostSelectors.getLikePosts)
   const myPostList = useSelector(PostSelectors.getMyPosts)
   const favouritesList = useSelector(PostSelectors.getSavedPosts)
+  const postsCount = useSelector(PostSelectors.getAllPostsCount);
+  const pagesCount = Math.ceil(postsCount / PER_PAGE);
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
-  const onTabClick = (key: TabsNames) => setActiveTab(key);
+  const onTabClick = (key: TabsNames) => () => {
+    setActiveTab(key);
+    setCurrentPage(1);
+  };
   const getCurrentList = ()=>{
     switch (activeTab) {
       case TabsNames.POPULAR:
@@ -31,8 +43,12 @@ const Home = () => {
     }
   }
   useEffect(() => {
-    dispatch(getAllPosts());
-  }, []);
+    const offset = PER_PAGE * (currentPage - 1);
+    dispatch(getAllPosts({ offset }));
+  }, [currentPage]);
+  const onPageChange = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected + 1);
+  };
 
   const TABS_LIST = useMemo(
     () => [
@@ -70,6 +86,28 @@ const Home = () => {
       />
       <CardsList cardsList={getCurrentList()} />
       <SelectedPostModal />
+      {activeTab !== TabsNames.POPULAR &&
+        activeTab !== TabsNames.FAVOURITES && (
+          <ReactPaginate
+            pageCount={pagesCount}
+            onPageChange={onPageChange}
+            containerClassName={styles.pagesContainer}
+            pageClassName={styles.pageNumber}
+            breakClassName={styles.pageNumber}
+            breakLinkClassName={styles.linkPage}
+            activeLinkClassName={styles.linkPage}
+            pageLinkClassName={styles.linkPage}
+            activeClassName={styles.activePageNumber}
+            nextClassName={classNames(styles.arrowButton, {
+              [styles.blockedButton]: currentPage === pagesCount,
+            })}
+            previousClassName={classNames(styles.arrowButton, {
+              [styles.blockedButton]: currentPage === 1,
+            })}
+            previousLinkClassName={styles.linkPage}
+            nextLinkClassName={styles.linkPage}
+          />
+        )}
     </div>
   );
 };

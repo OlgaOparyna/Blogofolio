@@ -4,12 +4,13 @@ import {
   SignInUserData,
   UserPayloadData,
 } from "../reducers/@types";
+import { PER_PAGE } from "src/utils/constants";
 
 const API = create({
   baseURL: "https://studapi.teachmeskills.by",
 });
-const getPosts = (search?: string) => {
-  return API.get("/blog/posts/", { limit: 12, search });
+const getPosts = (offset: number, search?: string) => {
+  return API.get("/blog/posts/", { limit: PER_PAGE, search, offset });
 };
 const getSinglePost = (id: string) => {
   return API.get(`/blog/posts/${id}`);

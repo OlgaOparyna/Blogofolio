@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "../store";
 import { CardListType, CardType } from "../../utils/@globalTypes";
+import { GetAllPostsPayload, SetAllPostsPayload } from "src/redux/reducers/@types";
 
 type initialType = {
   selectedPost: CardType | null;
@@ -38,9 +39,10 @@ const postSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    getAllPosts: (_, __: PayloadAction<undefined>) => {},
-    setAllPosts: (state, action: PayloadAction<CardListType>) => {
-      state.postsList = action.payload;
+    getAllPosts: (_, __: PayloadAction<GetAllPostsPayload>) => {},
+    setAllPosts: (state, { payload: { postsCount, cardList } }: PayloadAction<SetAllPostsPayload>) => {
+      state.postsList = cardList;
+      state.postsCount = postsCount;
     },
     getMyPosts: (_, __: PayloadAction<undefined>) => {},
     setMyPosts: (state, action: PayloadAction<CardListType>) => {
