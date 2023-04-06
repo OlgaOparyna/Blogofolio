@@ -1,13 +1,10 @@
 @import "src/assets/colors";
+@import "src/assets/mixins";
 
 .title {
+  @include title();
   display: block;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: $secondary;
-  margin-bottom: 8px;
-  padding-top: 40px;
+ padding-top: 40px;
 }
 .input {
   outline: none;

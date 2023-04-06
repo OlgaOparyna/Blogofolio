@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "../store";
 import { CardListType, CardType } from "../../utils/@globalTypes";
-import { GetAllPostsPayload, SetAllPostsPayload } from "src/redux/reducers/@types";
+import { AddPostPayload, GetAllPostsPayload, SetAllPostsPayload } from "src/redux/reducers/@types";
 
 type initialType = {
   selectedPost: CardType | null;
@@ -93,6 +93,7 @@ const postSlice = createSlice({
     setSearchedPosts: (state, action: PayloadAction<CardListType>) => {
       state.searchedPosts = action.payload;
     },
+    addNewPost: (_, __: PayloadAction<AddPostPayload>) => {},
     setSavedPosts: (state, action: PayloadAction<CardType>) => {
       const card = action.payload;
       const savedPostsIndex = state.savedPosts.findIndex(
@@ -120,6 +121,7 @@ export const {
   setMyPosts,
   getSearchedPosts,
   setSearchedPosts,
+  addNewPost,
 } = postSlice.actions;
 export default postSlice.reducer;
 export const PostSelectors = {

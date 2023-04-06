@@ -6,16 +6,21 @@ import {
   getAllPosts,
   setAllPosts,
   getSinglePost,
-  setSinglePost, setMyPosts, getMyPosts, setSearchedPosts, getSearchedPosts
+  setSinglePost,
+  setMyPosts,
+  getMyPosts,
+  setSearchedPosts,
+  getSearchedPosts,
+  addNewPost,
 } from "../reducers/postSlice";
 import { AllPostsResponse } from "./@types";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../../utils/@globalTypes";
 import callCheckingAuth from "src/redux/sagas/callCheckingAuth";
-import { GetAllPostsPayload } from "src/redux/reducers/@types";
+import { AddPostPayload, GetAllPostsPayload } from "src/redux/reducers/@types";
 
 function* getAllPostsWorker(action: PayloadAction<GetAllPostsPayload>) {
-  const { offset, ordering  } = action.payload
+  const { offset, ordering } = action.payload;
   const { ok, data, problem }: ApiResponse<AllPostsResponse> = yield call(
     API.getPosts,
     offset,
@@ -41,9 +46,8 @@ function* getSinglePostWorker(action: PayloadAction<string>) {
   }
 }
 function* getMyPostsWorker() {
-  const { ok, data, problem }: ApiResponse<AllPostsResponse> = yield callCheckingAuth(
-    API.getMyPosts
-  );
+  const { ok, data, problem }: ApiResponse<AllPostsResponse> =
+    yield callCheckingAuth(API.getMyPosts);
   if (ok && data) {
     yield put(setMyPosts(data.results));
   } else {
@@ -62,12 +66,24 @@ function* getSearchedPostsWorker(action: PayloadAction<string>) {
     console.warn("Error getting search posts", problem);
   }
 }
-
+function* addNewPostWorker(action: PayloadAction<AddPostPayload>) {
+  const { data, callback } = action.payload;
+  const { ok, problem }: ApiResponse<undefined> = yield callCheckingAuth(
+    API.addPost,
+    data
+  );
+  if (ok) {
+    callback();
+  } else {
+    console.warn("Error adding post", problem);
+  }
+}
 export default function* postsSaga() {
   yield all([
     takeLatest(getAllPosts, getAllPostsWorker),
     takeLatest(getSinglePost, getSinglePostWorker),
     takeLatest(getMyPosts, getMyPostsWorker),
     takeLatest(getSearchedPosts, getSearchedPostsWorker),
+    takeLatest(addNewPost, addNewPostWorker),
   ]);
 }
