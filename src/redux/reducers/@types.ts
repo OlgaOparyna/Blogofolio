@@ -23,7 +23,9 @@ export type SignUpUserPayload = PayloadWithCallback<UserPayloadData>;
 export type ActivateUserPayload = PayloadWithCallback<ActivateUserData>;
 export type SignInUserPayload = PayloadWithCallback<SignInUserData>;
 export type GetAllPostsPayload = {
-  offset: number
+  offset: number,
+  search?: string,
+  ordering?: string,
 }
 export type SetAllPostsPayload = {
   cardList: CardListType;

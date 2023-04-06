@@ -13,11 +13,20 @@ import { AuthSelectors } from "src/redux/reducers/authSlice";
 import SelectedPostModal from "./SelectedPostModal";
 import styles from "./Home.module.scss"
 import { PER_PAGE } from "src/utils/constants";
+import Button from "src/components/Button";
+import { ButtonType } from "src/utils/@globalTypes";
 
+enum Order {
+  Title = "title",
+  Date = "date",
+}
 const Home = () => {
   const [activeTab, setActiveTab] = useState(TabsNames.ALL);
   const [currentPage, setCurrentPage] = useState(1);
+  const [ordering, setOrdering] = useState("")
+
   const dispatch = useDispatch();
+
   const postsList = useSelector(PostSelectors.getAllPosts);
   const likePostsList = useSelector(PostSelectors.getLikePosts)
   const myPostList = useSelector(PostSelectors.getMyPosts)
@@ -44,10 +53,14 @@ const Home = () => {
   }
   useEffect(() => {
     const offset = PER_PAGE * (currentPage - 1);
-    dispatch(getAllPosts({ offset }));
-  }, [currentPage]);
+    dispatch(getAllPosts({ offset, ordering }));
+  }, [currentPage, ordering]);
   const onPageChange = ({ selected }: { selected: number }) => {
     setCurrentPage(selected + 1);
+  };
+  const onButtonOrderingClick = (order: Order) => () => {
+    order === ordering ? setOrdering("") : setOrdering(order);
+    setCurrentPage(1)
   };
 
   const TABS_LIST = useMemo(
@@ -84,6 +97,23 @@ const Home = () => {
         activeTab={activeTab}
         onClick={onTabClick}
       />
+      <div className={styles.orderingButtons}>
+        <Button
+          title={"Sort Date"}
+          onClick={onButtonOrderingClick(Order.Date)}
+          type={ButtonType.Secondary}
+          className={classNames(styles.orderingButton, {
+            [styles.activeButton]: ordering === Order.Date,
+          })}
+        />
+        <Button
+          title={" Sort Title"}
+          onClick={onButtonOrderingClick(Order.Title)}
+          type={ButtonType.Secondary}
+          className={classNames(styles.orderingButton, {
+            [styles.activeButton]: ordering === Order.Title,
+          })}
+        /></div>
       <CardsList cardsList={getCurrentList()} />
       <SelectedPostModal />
       {activeTab !== TabsNames.POPULAR &&

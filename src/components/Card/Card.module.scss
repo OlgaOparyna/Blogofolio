@@ -65,6 +65,8 @@
   font-size: 32px;
   line-height: 44px;
   color: $secondary;
+  max-height: 140px;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     color: $primary-secondary;
@@ -83,6 +85,8 @@
   font-size: 16px;
   line-height: 28px;
   color: $gray;
+  max-height: 142px;
+  overflow: hidden;
 }
 .image {
   width: 256px;
