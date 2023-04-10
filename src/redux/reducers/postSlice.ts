@@ -16,6 +16,7 @@ type initialType = {
   searchedPosts: CardListType;
   searchValue: string;
   postsCount: number;
+  isAllPostsLoading: boolean;
 };
 export enum LikeStatus {
   Like = "like",
@@ -33,6 +34,7 @@ const initialState: initialType = {
   searchedPosts: [],
   searchValue: "",
   postsCount: 0,
+  isAllPostsLoading: false,
 };
 
 const postSlice = createSlice({
@@ -94,6 +96,9 @@ const postSlice = createSlice({
       state.searchedPosts = action.payload;
     },
     addNewPost: (_, __: PayloadAction<AddPostPayload>) => {},
+    setAllPostsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isAllPostsLoading = action.payload
+    },
     setSavedPosts: (state, action: PayloadAction<CardType>) => {
       const card = action.payload;
       const savedPostsIndex = state.savedPosts.findIndex(
@@ -122,6 +127,7 @@ export const {
   getSearchedPosts,
   setSearchedPosts,
   addNewPost,
+  setAllPostsLoading
 } = postSlice.actions;
 export default postSlice.reducer;
 export const PostSelectors = {
@@ -137,4 +143,5 @@ export const PostSelectors = {
   getSearchedPosts: (state: RootState) => state.posts.searchedPosts,
   getSearchValue: (state: RootState) => state.posts.searchValue,
   getAllPostsCount: (state: RootState) => state.posts.postsCount,
+  getAllPostsLoading: (state: RootState) => state.posts.isAllPostsLoading,
 };

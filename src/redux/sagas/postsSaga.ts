@@ -11,7 +11,7 @@ import {
   getMyPosts,
   setSearchedPosts,
   getSearchedPosts,
-  addNewPost,
+  addNewPost, setAllPostsLoading
 } from "../reducers/postSlice";
 import { AllPostsResponse } from "./@types";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -20,6 +20,7 @@ import callCheckingAuth from "src/redux/sagas/callCheckingAuth";
 import { AddPostPayload, GetAllPostsPayload } from "src/redux/reducers/@types";
 
 function* getAllPostsWorker(action: PayloadAction<GetAllPostsPayload>) {
+  yield put(setAllPostsLoading(true));
   const { offset, ordering } = action.payload;
   const { ok, data, problem }: ApiResponse<AllPostsResponse> = yield call(
     API.getPosts,
@@ -32,6 +33,7 @@ function* getAllPostsWorker(action: PayloadAction<GetAllPostsPayload>) {
   } else {
     console.warn("Error getting all posts", problem);
   }
+  yield put(setAllPostsLoading(false));
 }
 
 function* getSinglePostWorker(action: PayloadAction<string>) {

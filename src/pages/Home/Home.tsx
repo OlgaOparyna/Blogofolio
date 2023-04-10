@@ -11,10 +11,11 @@ import { getAllPosts, PostSelectors } from "src/redux/reducers/postSlice";
 import { AuthSelectors } from "src/redux/reducers/authSlice";
 
 import SelectedPostModal from "./SelectedPostModal";
-import styles from "./Home.module.scss"
+import styles from "./Home.module.scss";
 import { PER_PAGE } from "src/utils/constants";
 import Button from "src/components/Button";
 import { ButtonType } from "src/utils/@globalTypes";
+import Loader from "src/components/Loader";
 
 enum Order {
   Title = "title",
@@ -23,22 +24,23 @@ enum Order {
 const Home = () => {
   const [activeTab, setActiveTab] = useState(TabsNames.ALL);
   const [currentPage, setCurrentPage] = useState(1);
-  const [ordering, setOrdering] = useState("")
+  const [ordering, setOrdering] = useState("");
 
   const dispatch = useDispatch();
 
   const postsList = useSelector(PostSelectors.getAllPosts);
-  const likePostsList = useSelector(PostSelectors.getLikePosts)
-  const myPostList = useSelector(PostSelectors.getMyPosts)
-  const favouritesList = useSelector(PostSelectors.getSavedPosts)
+  const likePostsList = useSelector(PostSelectors.getLikePosts);
+  const myPostList = useSelector(PostSelectors.getMyPosts);
+  const favouritesList = useSelector(PostSelectors.getSavedPosts);
   const postsCount = useSelector(PostSelectors.getAllPostsCount);
   const pagesCount = Math.ceil(postsCount / PER_PAGE);
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
+  const isLoading = useSelector(PostSelectors.getAllPostsLoading);
   const onTabClick = (key: TabsNames) => () => {
     setActiveTab(key);
     setCurrentPage(1);
   };
-  const getCurrentList = ()=>{
+  const getCurrentList = () => {
     switch (activeTab) {
       case TabsNames.POPULAR:
         return likePostsList;
@@ -50,7 +52,7 @@ const Home = () => {
       default:
         return postsList;
     }
-  }
+  };
   useEffect(() => {
     const offset = PER_PAGE * (currentPage - 1);
     dispatch(getAllPosts({ offset, ordering }));
@@ -60,7 +62,7 @@ const Home = () => {
   };
   const onButtonOrderingClick = (order: Order) => () => {
     order === ordering ? setOrdering("") : setOrdering(order);
-    setCurrentPage(1)
+    setCurrentPage(1);
   };
 
   const TABS_LIST = useMemo(
@@ -107,37 +109,44 @@ const Home = () => {
           })}
         />
         <Button
-          title={" Sort Title"}
+          title={"Sort Title"}
           onClick={onButtonOrderingClick(Order.Title)}
           type={ButtonType.Secondary}
           className={classNames(styles.orderingButton, {
             [styles.activeButton]: ordering === Order.Title,
           })}
-        /></div>
-      <CardsList cardsList={getCurrentList()} />
-      <SelectedPostModal />
-      {activeTab !== TabsNames.POPULAR &&
-        activeTab !== TabsNames.FAVOURITES && (
-          <ReactPaginate
-            pageCount={pagesCount}
-            onPageChange={onPageChange}
-            containerClassName={styles.pagesContainer}
-            pageClassName={styles.pageNumber}
-            breakClassName={styles.pageNumber}
-            breakLinkClassName={styles.linkPage}
-            activeLinkClassName={styles.linkPage}
-            pageLinkClassName={styles.linkPage}
-            activeClassName={styles.activePageNumber}
-            nextClassName={classNames(styles.arrowButton, {
-              [styles.blockedButton]: currentPage === pagesCount,
-            })}
-            previousClassName={classNames(styles.arrowButton, {
-              [styles.blockedButton]: currentPage === 1,
-            })}
-            previousLinkClassName={styles.linkPage}
-            nextLinkClassName={styles.linkPage}
-          />
-        )}
+        />
+      </div>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CardsList cardsList={getCurrentList()} />
+          <SelectedPostModal />
+          {activeTab !== TabsNames.POPULAR &&
+            activeTab !== TabsNames.FAVOURITES && (
+              <ReactPaginate
+                pageCount={pagesCount}
+                onPageChange={onPageChange}
+                containerClassName={styles.pagesContainer}
+                pageClassName={styles.pageNumber}
+                breakClassName={styles.pageNumber}
+                breakLinkClassName={styles.linkPage}
+                activeLinkClassName={styles.linkPage}
+                pageLinkClassName={styles.linkPage}
+                activeClassName={styles.activePageNumber}
+                nextClassName={classNames(styles.arrowButton, {
+                  [styles.blockedButton]: currentPage === pagesCount,
+                })}
+                previousClassName={classNames(styles.arrowButton, {
+                  [styles.blockedButton]: currentPage === 1,
+                })}
+                previousLinkClassName={styles.linkPage}
+                nextLinkClassName={styles.linkPage}
+              />
+            )}
+        </>
+      )}
     </div>
   );
 };
