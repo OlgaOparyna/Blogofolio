@@ -1,4 +1,4 @@
-import { takeLatest, all, call, put } from "redux-saga/effects";
+import { takeLatest, all, call, put, takeLeading } from "redux-saga/effects";
 import { ApiResponse } from "apisauce";
 
 import API from "../api";
@@ -11,13 +11,18 @@ import {
   getMyPosts,
   setSearchedPosts,
   getSearchedPosts,
-  addNewPost, setAllPostsLoading
+  addNewPost,
+  setAllPostsLoading,
 } from "../reducers/postSlice";
 import { AllPostsResponse } from "./@types";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { CardType } from "../../utils/@globalTypes";
 import callCheckingAuth from "src/redux/sagas/callCheckingAuth";
-import { AddPostPayload, GetAllPostsPayload } from "src/redux/reducers/@types";
+import {
+  AddPostPayload,
+  GetAllPostsPayload,
+  GetSearchedPostsPayload,
+} from "src/redux/reducers/@types";
 
 function* getAllPostsWorker(action: PayloadAction<GetAllPostsPayload>) {
   yield put(setAllPostsLoading(true));
@@ -56,14 +61,23 @@ function* getMyPostsWorker() {
     console.warn("Error getting my post", problem);
   }
 }
-function* getSearchedPostsWorker(action: PayloadAction<string>) {
+function* getSearchedPostsWorker(
+  action: PayloadAction<GetSearchedPostsPayload>
+) {
+  const { searchValue, isOverwrite, offset } = action.payload;
   const { ok, data, problem }: ApiResponse<AllPostsResponse> = yield call(
     API.getPosts,
-    0,
-    action.payload
+    offset,
+    searchValue
   );
   if (ok && data) {
-    yield put(setSearchedPosts(data.results));
+    yield put(
+      setSearchedPosts({
+        cardList: data.results,
+        postsCount: data.count,
+        isOverwrite,
+      })
+    );
   } else {
     console.warn("Error getting search posts", problem);
   }
@@ -85,7 +99,7 @@ export default function* postsSaga() {
     takeLatest(getAllPosts, getAllPostsWorker),
     takeLatest(getSinglePost, getSinglePostWorker),
     takeLatest(getMyPosts, getMyPostsWorker),
-    takeLatest(getSearchedPosts, getSearchedPostsWorker),
+    takeLeading(getSearchedPosts, getSearchedPostsWorker),
     takeLatest(addNewPost, addNewPostWorker),
   ]);
 }
