@@ -1,7 +1,8 @@
 export enum TabsNames {
   ALL,
-  FAVORITES,
+  MYPOSTS,
   POPULAR,
+  FAVOURITES,
 }
 export type TabsProps = {
 tabsListArray: TabsType[];

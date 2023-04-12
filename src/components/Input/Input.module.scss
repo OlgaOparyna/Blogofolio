@@ -18,10 +18,12 @@
   padding: 18px 20px;
   width: 544px;
   border-radius: 2px;
-  border: none;
   background: $white;
   box-sizing: border-box;
-  &:focus {
+  border: 2px solid transparent;
+  &:focus,
+  &hover {
+    outline: none;
     border: 2px solid $medium;
   }
   &:active {

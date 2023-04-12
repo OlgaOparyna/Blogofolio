@@ -1,22 +1,37 @@
-import React, { useMemo, useState } from "react";
-import styles from "./Header.module.scss";
-import User from "../../../components/User";
-import Button from "../../../components/Button";
-import { CloseIcon, OpenedMenu, UserIcon } from "../../../assets/icons";
-import ThemeSwitcher from "../../../components/ThemeSwitcher";
+import React, { useMemo, useState, KeyboardEvent } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { RoutesList } from "../../Router";
+import { useDispatch, useSelector } from "react-redux";
 import classNames from "classnames";
-import { ButtonType } from "../../../utils/@globalTypes";
+
+import User from "src/components/User";
+import Button from "src/components/Button";
+import ThemeSwitcher from "src/components/ThemeSwitcher";
+import BurgerButton from "src/components/Burger";
+import { ButtonType } from "src/utils/@globalTypes";
+import { SearchIcon, UserIcon } from "src/assets/icons";
+import { AuthSelectors, logoutUser } from "src/redux/reducers/authSlice";
+
+import styles from "./Header.module.scss";
+import { RoutesList } from "../../Router";
+import { getSearchedPosts } from "src/redux/reducers/postSlice";
+import Input from "src/components/Input";
 
 const Header = () => {
   const [isOpened, setOpened] = useState(false);
+  const [isInputOpened, setInputOpened] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
-  const isLoggedIn = false;
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
+  const userName = useSelector(AuthSelectors.getUserName);
   const onBurgerClick = () => setOpened(!isOpened);
   const onAuthButtonClick = () => {
     navigate(RoutesList.SignIn);
+  };
+  const onLogoutClick = () => {
+    dispatch(logoutUser());
   };
   const navButtonsList = useMemo(
     () => [
@@ -35,21 +50,58 @@ const Header = () => {
     ],
     [isLoggedIn]
   );
+  const onClickSearchButton = () => {
+    setInputOpened(!isInputOpened);
+    if (isInputOpened) {
+      dispatch(getSearchedPosts(searchValue));
+      navigate(RoutesList.Search);
+    }
+  };
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      onClickSearchButton();
+    }
+  };
   return (
     <>
       <div className={styles.container}>
-        <Button
-          title={isOpened ? <CloseIcon /> : <OpenedMenu />}
-          onClick={onBurgerClick}
-          type={ButtonType.Primary}
-          className={styles.burgerButton}
-        />
-        {isLoggedIn ? (<User userName={"Artem Malkin"} />): (<Button title={<UserIcon/>} onClick={onAuthButtonClick} type={ButtonType.Primary}/>)}
+        <div className={styles.infoContainer}>
+          <BurgerButton isOpened={isOpened} onClick={onBurgerClick} />
+          {isInputOpened && (
+            <Input
+              value={searchValue}
+              onChange={setSearchValue}
+              onKeyDown={onKeyDown}
+              inputClassName={styles.input}
+              placeholder="Search..."
+            />
+          )}
+        </div>
+        <div className={styles.infoContainer}>
+          <Button
+            title={<SearchIcon />}
+            onClick={onClickSearchButton}
+            type={ButtonType.Primary}
+            className={styles.button}
+          />
+          <div className={styles.userName} onClick={onAuthButtonClick}>
+            {isLoggedIn && userName ? (
+              <User userName={userName.username} />
+            ) : (
+              <Button
+                title={<UserIcon />}
+                onClick={onAuthButtonClick}
+                type={ButtonType.Primary}
+                className={styles.authButton}
+              />
+            )}
+          </div>
+        </div>
       </div>
       {isOpened && (
         <div className={styles.menuContainer}>
           <div className={styles.actionsContainer}>
-            {isLoggedIn && <User userName={"Artem Malkin"} />}
+            {isLoggedIn && userName && <User userName={userName.username} />}
             {navButtonsList.map(({ key, title }) => {
               return (
                 <NavLink
@@ -68,7 +120,7 @@ const Header = () => {
             <ThemeSwitcher />
             <Button
               title={isLoggedIn ? "Log Out" : "Sign In"}
-              onClick={isLoggedIn ? ()=>{} : onAuthButtonClick}
+              onClick={isLoggedIn ? onLogoutClick : onAuthButtonClick}
               type={ButtonType.Secondary}
               className={styles.authButton}
             />
