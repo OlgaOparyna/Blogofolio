@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-
+import { useDispatch, useSelector } from "react-redux";
 import Title from "../../components/Title";
 import Tabs from "../../components/Tabs";
 import CardsList from "../../components/CardList";
 import { TabsNames } from "../../components/Tabs/types";
 import SelectedPostModal from "./SelectedPostModal";
-import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, PostSelectors } from "../../redux/reducers/postSlice";
 
 const TABS_LIST = [
