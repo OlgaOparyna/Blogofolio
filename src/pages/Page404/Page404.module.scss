@@ -1,0 +1,27 @@
+@import "src/assets/colors";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+.error {
+  color: $secondary;
+  font-weight: 600;
+  font-size: 250px;
+  line-height: 210px;
+}
+.text {
+  color: $secondary;
+  font-weight: 600;
+  font-size: 100px;
+  line-height: 150px;
+}
+.darkText {
+  color: $white;
+}
+.btnHome {
+  width: 450px;
+}
