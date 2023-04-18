@@ -1,13 +1,10 @@
 @import "src/assets/colors";
+@import "src/assets/mixins";
 
 .title {
+  @include title();
   display: block;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 20px;
-  color: $secondary;
-  margin-bottom: 8px;
-  padding-top: 40px;
+ padding-top: 40px;
 }
 .input {
   outline: none;
@@ -18,10 +15,12 @@
   padding: 18px 20px;
   width: 544px;
   border-radius: 2px;
-  border: none;
   background: $white;
   box-sizing: border-box;
-  &:focus {
+  border: 2px solid transparent;
+  &:focus,
+  &hover {
+    outline: none;
     border: 2px solid $medium;
   }
   &:active {

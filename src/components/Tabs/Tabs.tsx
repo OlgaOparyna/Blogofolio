@@ -6,7 +6,6 @@ import { TabsNames, TabsProps } from "./types";
 import { Theme, useThemeContext } from "../../context/Theme/Context";
 
 const Tabs: FC<TabsProps> = ({ tabsListArray, activeTab, onClick }) => {
-  const onTabClick = (key: TabsNames) => () => onClick(key);
   const { theme } = useThemeContext();
   return (
     <div
@@ -22,7 +21,7 @@ const Tabs: FC<TabsProps> = ({ tabsListArray, activeTab, onClick }) => {
               [styles.activeTab]: activeTab === tab.key,
               [styles.disabled]: tab.disabled,
             })}
-            onClick={tab.disabled ? undefined : onTabClick(tab.key)}
+            onClick={tab.disabled ? undefined : onClick(tab.key)}
           >
             {tab.title}
           </div>

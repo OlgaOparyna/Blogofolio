@@ -36,9 +36,9 @@ const Card: FC<CardProps> = ({ card, size }) => {
     (post) => post.id === card.id
   );
 
-  const isLarge = size === CardSize.Large;
   const isMedium = size === CardSize.Medium;
   const isSmall = size === CardSize.Small;
+  const isSearch = size === CardSize.Search;
   const isDark = theme === Theme.Dark;
   const onClickMore = () => {
     dispatch(setSelectedPost(card));
@@ -58,6 +58,7 @@ const Card: FC<CardProps> = ({ card, size }) => {
       className={classNames(styles.container, {
         [styles.mediumContainer]: isMedium,
         [styles.smallContainer]: isSmall,
+        [styles.searchContainer]: isSearch,
         [styles.darkContainer]: isDark,
       })}
     >
@@ -65,6 +66,7 @@ const Card: FC<CardProps> = ({ card, size }) => {
         className={classNames(styles.infoContainer, {
           [styles.mediumInfoContainer]: isMedium,
           [styles.smallInfoContainer]: isSmall,
+          [styles.searchInfoContainer]: isSearch,
         })}
       >
         <div className={styles.mainInfoContainer}>
@@ -73,7 +75,7 @@ const Card: FC<CardProps> = ({ card, size }) => {
             <div
               onClick={onTitleClick}
               className={classNames(styles.title, {
-                [styles.mediumTitle]: !isLarge,
+                [styles.mediumTitle]: isMedium || isSmall  || isSearch,
                 [styles.darkTitle]: isDark,
               })}
             >
@@ -87,7 +89,7 @@ const Card: FC<CardProps> = ({ card, size }) => {
           alt=" "
           className={classNames(styles.image, {
             [styles.mediumImage]: isMedium,
-            [styles.smallImage]: isSmall,
+            [styles.smallImage]: isSmall  || isSearch,
           })}
         />
       </div>

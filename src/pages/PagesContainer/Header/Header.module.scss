@@ -10,11 +10,28 @@
   width: 100%;
   margin-bottom: 40px;
 }
+.infoContainer {
+  display: flex;
+}
+.input {
+  min-height: 84px;
+  flex: 1;
+  background-color: $primary-secondary;
+  color: $white;
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+}
+.inputContainer {
+  width: 100%;
+}
 .burgerButton {
   padding: 30px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  border-left: 1px solid $primary-secondary;
+  border-right: 1px solid $primary-secondary;
     &:hover {
     background-color: $primary;
   }

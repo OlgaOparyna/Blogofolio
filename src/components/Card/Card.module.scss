@@ -12,13 +12,18 @@
   box-sizing: border-box;
 }
 .mediumContainer {
-  max-width: 352px;
+  width: 352px;
   gap: 27px;
 }
 .smallContainer {
-  max-width: 354px;
+  width: 354px;
   height: 206px;
   gap: 18px;
+}
+.searchContainer {
+  max-width: 100%;
+  height: 206px;
+  gap: 44px;
 }
 .darkContainer {
   border-bottom-color: $gray;
@@ -33,6 +38,11 @@
 }
 .smallInfoContainer {
   gap: 34px;
+}
+.searchInfoContainer {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 32px;
 }
 .mainInfoContainer {
   display: flex;
@@ -55,6 +65,8 @@
   font-size: 32px;
   line-height: 44px;
   color: $secondary;
+  max-height: 140px;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     color: $primary-secondary;
@@ -69,23 +81,25 @@
   line-height: 28px;
 }
 .text {
-  ont-weight: 400;
+  font-weight: 400;
   font-size: 16px;
   line-height: 28px;
   color: $gray;
+  max-height: 142px;
+  overflow: hidden;
 }
 .image {
-  max-width: 256px;
-  max-height: 244px;
+  width: 256px;
+  height: 244px;
   object-fit: cover;
 }
 .mediumImage {
-  max-width: 352px;
-  max-height: 246px;
+  width: 352px;
+  height: 246px;
 }
 .smallImage {
-  max-width: 96px;
-  max-height: 96px;
+  width: 96px;
+  height: 96px;
 }
 .footer {
   display: flex;
