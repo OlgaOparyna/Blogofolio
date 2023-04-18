@@ -1,8 +1,8 @@
 import { create } from "apisauce";
 import {
-  ActivateUserData,
+  ActivateUserData, NewPasswordData, ResetPasswordData,
   SignInUserData,
-  UserPayloadData,
+  UserPayloadData
 } from "../reducers/@types";
 import { PER_PAGE } from "src/utils/constants";
 
@@ -60,6 +60,12 @@ const verifyToken = (token: string) => {
 const refreshToken = (refresh: string) => {
   return API.post("/auth/jwt/refresh/", { refresh });
 };
+const resetPassword = (data: ResetPasswordData) =>{
+  return API.post("/auth/users/reset_password/", data)
+}
+const newPassword = (data: NewPasswordData) =>{
+  return API.post("/auth/users/reset_password_confirm/", data)
+}
 export default {
   getPosts,
   getSinglePost,
@@ -71,4 +77,6 @@ export default {
   refreshToken,
   getMyPosts,
   addPost,
+  resetPassword,
+  newPassword,
 };

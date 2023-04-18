@@ -26,12 +26,13 @@ export enum RoutesList {
   Confirm = "/activate/:uid/:token",
   Success = "/blog/sign-up/success",
   ResetPassword = "/blog/sign-up/reset-password",
-  NewPassword = "/blog/sign-up/new-password",
+  NewPassword = "/password/reset/confirm/:uid/:token",
   Default = "*",
 }
 const Router = () => {
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserInfo());

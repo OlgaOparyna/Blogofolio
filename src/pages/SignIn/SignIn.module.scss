@@ -6,8 +6,9 @@
   line-height: 20px;
   color: $secondary;
   padding-top: 16px;
+  cursor: pointer;
 }
-.darkForgotPassword{
+.darkForgotPassword {
   color: $white;
 }
 .singUp {
@@ -19,8 +20,8 @@
   justify-content: center;
   padding: 24px 0 40px;
 }
-.darkSingUp{
-  color:$medium;
+.darkSingUp {
+  color: $medium;
 }
 .navLink {
   margin-left: 4px;
@@ -30,6 +31,6 @@
     text-decoration: underline;
   }
 }
-.darkNavLink{
+.darkNavLink {
   color: $primary-secondary;
 }
