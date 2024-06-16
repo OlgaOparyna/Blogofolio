@@ -1,4 +1,5 @@
 import {create} from "apisauce";
+import { ActivateUserData, SignInUserData, SignInUserPayload, UserPayloadData } from "../reducers/@types";
 
 const API = create({
   baseURL: "https://studapi.teachmeskills.by",
@@ -9,7 +10,19 @@ const getPosts=()=>{
 const getSinglePost = (id: string) => {
   return API.get(`/blog/posts/${id}`)
 }
+const signUpUser = (data: UserPayloadData) => {
+  return API.post(`/auth/users/`, data)
+}
+const activateUser = (data:ActivateUserData)=>{
+  return API.post("/auth/users/activation/", data)
+}
+const signInUser = (data: SignInUserData)=>{
+  return API.post("/auth/jwt/create/", data)
+}
 export default {
   getPosts,
   getSinglePost,
+  signUpUser,
+  activateUser,
+  signInUser
 }
