@@ -14,12 +14,18 @@ import {
   setLoggedIn,
   signInUser,
   signUpUser,
-  getUserInfo, setUserInfo
+  getUserInfo,
+  setUserInfo,
+  resetPassword,
+  newPassword
 } from "../reducers/authSlice";
 import {
   ActivateUserPayload,
+  NewPasswordPayload,
+  ResetPasswordData,
+  ResetPasswordPayload,
   SignInUserPayload,
-  SignUpUserPayload,
+  SignUpUserPayload
 } from "../reducers/@types";
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from "src/utils/constants";
 import callCheckingAuth from "src/redux/sagas/callCheckingAuth";
@@ -73,11 +79,36 @@ function* getUserInfoWorker() {
       console.warn("Error get information user", problem);
     }
 }
+function* resetPasswordWorker(action: PayloadAction<ResetPasswordPayload>) {
+  const { data, callback } = action.payload;
+  const { ok, problem }: ApiResponse<undefined> = yield call(
+    API.resetPassword,
+    data
+  );
+  if (ok) {
+   callback();
+  } else {
+    console.warn("Error resetting password", problem);
+  }
+}
+function* newPasswordWorker(action: PayloadAction<NewPasswordPayload>) {
+  const { data, callback } = action.payload;
+  const { ok, problem }: ApiResponse<undefined> = yield call(
+    API.newPassword,
+    data
+  );
+  if (ok) {
+    callback();
+  } else {
+    console.warn("Error setting new password", problem);
+  }
+}
 function* logoutUserWorker() {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
   yield put(setLoggedIn(false));
 }
+
 export default function* authSaga() {
   yield all([
     takeLatest(signUpUser, signUpUserWorker),
@@ -85,5 +116,7 @@ export default function* authSaga() {
     takeLatest(signInUser, signInUserWorker),
     takeLatest(getUserInfo, getUserInfoWorker),
     takeLatest(logoutUser, logoutUserWorker),
+    takeLatest(resetPassword, resetPasswordWorker),
+    takeLatest(newPassword, newPasswordWorker),
   ]);
 }

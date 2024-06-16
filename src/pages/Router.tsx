@@ -14,6 +14,7 @@ import Page404 from "./Page404";
 import ResetPassword from "./ResetPassword";
 import NewPassword from "./NewPassword";
 import Search from "src/pages/Search";
+import AddPost from "src/pages/AddPost";
 
 export enum RoutesList {
   Home = "/",
@@ -25,12 +26,13 @@ export enum RoutesList {
   Confirm = "/activate/:uid/:token",
   Success = "/blog/sign-up/success",
   ResetPassword = "/blog/sign-up/reset-password",
-  NewPassword = "/blog/sign-up/new-password",
+  NewPassword = "/password/reset/confirm/:uid/:token",
   Default = "*",
 }
 const Router = () => {
   const isLoggedIn = useSelector(AuthSelectors.getLoggedIn);
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(getUserInfo());
@@ -46,7 +48,7 @@ const Router = () => {
           <Route
             path={RoutesList.AddPost}
             element={
-              isLoggedIn ? <Home /> : <Navigate to={RoutesList.SignIn} />
+              isLoggedIn ? <AddPost /> : <Navigate to={RoutesList.SignIn} />
             }
           />
           <Route path={RoutesList.SelectedPost} element={<SelectedPost />} />

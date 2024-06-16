@@ -1,16 +1,16 @@
 import { create } from "apisauce";
 import {
-  ActivateUserData,
+  ActivateUserData, NewPasswordData, ResetPasswordData,
   SignInUserData,
-  UserPayloadData,
+  UserPayloadData
 } from "../reducers/@types";
 import { PER_PAGE } from "src/utils/constants";
 
 const API = create({
   baseURL: "https://studapi.teachmeskills.by",
 });
-const getPosts = (offset: number, search?: string) => {
-  return API.get("/blog/posts/", { limit: PER_PAGE, search, offset });
+const getPosts = (offset: number, search?: string, ordering?: string) => {
+  return API.get("/blog/posts/", { limit: PER_PAGE, offset, search, ordering });
 };
 const getSinglePost = (id: string) => {
   return API.get(`/blog/posts/${id}`);
@@ -46,12 +46,26 @@ const getMyPosts = (token: string) => {
     }
   );
 };
+const addPost = (token: string, data: any) => {
+  return API.post("/blog/posts/", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
 const verifyToken = (token: string) => {
   return API.post("/auth/jwt/verify/", { token });
 };
 const refreshToken = (refresh: string) => {
   return API.post("/auth/jwt/refresh/", { refresh });
 };
+const resetPassword = (data: ResetPasswordData) =>{
+  return API.post("/auth/users/reset_password/", data)
+}
+const newPassword = (data: NewPasswordData) =>{
+  return API.post("/auth/users/reset_password_confirm/", data)
+}
 export default {
   getPosts,
   getSinglePost,
@@ -62,4 +76,7 @@ export default {
   verifyToken,
   refreshToken,
   getMyPosts,
+  addPost,
+  resetPassword,
+  newPassword,
 };

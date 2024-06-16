@@ -9,12 +9,12 @@ import ThemeSwitcher from "src/components/ThemeSwitcher";
 import BurgerButton from "src/components/Burger";
 import { ButtonType } from "src/utils/@globalTypes";
 import { SearchIcon, UserIcon } from "src/assets/icons";
-import { AuthSelectors, logoutUser } from "src/redux/reducers/authSlice";
-
-import styles from "./Header.module.scss";
-import { RoutesList } from "../../Router";
 import { getSearchedPosts } from "src/redux/reducers/postSlice";
+import { AuthSelectors, logoutUser } from "src/redux/reducers/authSlice";
 import Input from "src/components/Input";
+
+import { RoutesList } from "../../Router";
+import styles from "./Header.module.scss";
 
 const Header = () => {
   const [isOpened, setOpened] = useState(false);
@@ -53,7 +53,8 @@ const Header = () => {
   const onClickSearchButton = () => {
     setInputOpened(!isInputOpened);
     if (isInputOpened) {
-      dispatch(getSearchedPosts(searchValue));
+      dispatch(getSearchedPosts({ searchValue, isOverwrite: true, offset: 0 }));
+      setSearchValue("")
       navigate(RoutesList.Search);
     }
   };
@@ -68,13 +69,15 @@ const Header = () => {
         <div className={styles.infoContainer}>
           <BurgerButton isOpened={isOpened} onClick={onBurgerClick} />
           {isInputOpened && (
-            <Input
-              value={searchValue}
-              onChange={setSearchValue}
-              onKeyDown={onKeyDown}
-              inputClassName={styles.input}
-              placeholder="Search..."
-            />
+            <div className={styles.inputContainer}>
+              <Input
+                value={searchValue}
+                onChange={setSearchValue}
+                onKeyDown={onKeyDown}
+                inputClassName={styles.input}
+                placeholder="Search..."
+              />
+            </div>
           )}
         </div>
         <div className={styles.infoContainer}>

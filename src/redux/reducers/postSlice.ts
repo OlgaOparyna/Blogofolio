@@ -2,7 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "../store";
 import { CardListType, CardType } from "../../utils/@globalTypes";
-import { GetAllPostsPayload, SetAllPostsPayload } from "src/redux/reducers/@types";
+import {
+  AddPostPayload,
+  GetAllPostsPayload,
+  GetSearchedPostsPayload,
+  SetAllPostsPayload,
+  SetSearchedPostsPayload,
+} from "src/redux/reducers/@types";
 
 type initialType = {
   selectedPost: CardType | null;
@@ -16,6 +22,8 @@ type initialType = {
   searchedPosts: CardListType;
   searchValue: string;
   postsCount: number;
+  searchedPostsCount: number;
+  isAllPostsLoading: boolean;
 };
 export enum LikeStatus {
   Like = "like",
@@ -33,6 +41,8 @@ const initialState: initialType = {
   searchedPosts: [],
   searchValue: "",
   postsCount: 0,
+  searchedPostsCount: 0,
+  isAllPostsLoading: false,
 };
 
 const postSlice = createSlice({
@@ -40,7 +50,10 @@ const postSlice = createSlice({
   initialState,
   reducers: {
     getAllPosts: (_, __: PayloadAction<GetAllPostsPayload>) => {},
-    setAllPosts: (state, { payload: { postsCount, cardList } }: PayloadAction<SetAllPostsPayload>) => {
+    setAllPosts: (
+      state,
+      { payload: { postsCount, cardList } }: PayloadAction<SetAllPostsPayload>
+    ) => {
       state.postsList = cardList;
       state.postsCount = postsCount;
     },
@@ -87,11 +100,27 @@ const postSlice = createSlice({
         state[secondaryKey].splice(secondaryIndex, 1);
       }
     },
-    getSearchedPosts: (state, action: PayloadAction<string>) => {
-      state.searchValue = action.payload;
+    getSearchedPosts: (
+      state,
+      action: PayloadAction<GetSearchedPostsPayload>
+    ) => {
+      state.searchValue = action.payload.searchValue;
     },
-    setSearchedPosts: (state, action: PayloadAction<CardListType>) => {
-      state.searchedPosts = action.payload;
+    setSearchedPosts: (
+      state,
+      action: PayloadAction<SetSearchedPostsPayload>
+    ) => {
+      const { isOverwrite, cardList, postsCount } = action.payload;
+      state.searchedPostsCount = postsCount;
+      if (isOverwrite) {
+        state.searchedPosts = cardList;
+      } else {
+        state.searchedPosts.push(...cardList);
+      }
+    },
+    addNewPost: (_, __: PayloadAction<AddPostPayload>) => {},
+    setAllPostsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isAllPostsLoading = action.payload;
     },
     setSavedPosts: (state, action: PayloadAction<CardType>) => {
       const card = action.payload;
@@ -120,6 +149,8 @@ export const {
   setMyPosts,
   getSearchedPosts,
   setSearchedPosts,
+  addNewPost,
+  setAllPostsLoading,
 } = postSlice.actions;
 export default postSlice.reducer;
 export const PostSelectors = {
@@ -135,4 +166,6 @@ export const PostSelectors = {
   getSearchedPosts: (state: RootState) => state.posts.searchedPosts,
   getSearchValue: (state: RootState) => state.posts.searchValue,
   getAllPostsCount: (state: RootState) => state.posts.postsCount,
+  getAllPostsLoading: (state: RootState) => state.posts.isAllPostsLoading,
+  getSearchedPostsCount: (state: RootState) => state.posts.searchedPostsCount,
 };

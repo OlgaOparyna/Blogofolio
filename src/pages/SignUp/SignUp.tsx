@@ -19,6 +19,10 @@ const SignUp = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [nameTouched, setNameTouched] = useState(false);
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
   const { theme } = useThemeContext();
   const isDark = theme === Theme.Dark;
   const dispatch = useDispatch();
@@ -35,6 +39,15 @@ const SignUp = () => {
   const onChangeConfirmPassword = (value: string) => {
     setConfirmPassword(value);
   };
+  const onBlurName = () => {
+    setNameTouched(true);
+  };
+  const onBlurEmail = () => {
+    setEmailTouched(true);
+  };
+  const onBlurPassword = () => {
+    setPasswordTouched(true);
+  };
   const onSignUpClick = () => {
     dispatch(
       signUpUser({
@@ -44,38 +57,50 @@ const SignUp = () => {
     );
   };
   useEffect(() => {
-    if (name.length === 0) {
+    if (name.length === 0 && nameTouched) {
       setNameError("Name is required field");
     } else {
       setNameError("");
     }
-  }, [name]);
+  }, [name, nameTouched]);
 
   useEffect(() => {
-    if (email.length === 0) {
+    if (email.length === 0 && emailTouched) {
       setEmailError("Email is required field");
     } else {
       setEmailError("");
     }
-  }, [email]);
+  }, [email, emailTouched]);
 
   useEffect(() => {
-    if (password !== confirmPassword) {
-      setPasswordError("Passwords must match");
-    } else if (password.length === 0 || confirmPassword.length === 0) {
-      setPasswordError("Password is required field");
-    } else {
-      setPasswordError("");
+    if (passwordTouched) {
+      if (password !== confirmPassword) {
+        setPasswordError("Passwords must match");
+      } else if (password.length === 0 || confirmPassword.length === 0) {
+        setPasswordError("Password is required field");
+      } else {
+        setPasswordError("");
+      }
     }
-  }, [confirmPassword, password]);
+  }, [confirmPassword, password, passwordTouched]);
 
   const isValid = useMemo(() => {
     return (
       nameError.length === 0 &&
       emailError.length === 0 &&
-      passwordError.length === 0
+      passwordError.length === 0 &&
+      nameTouched &&
+      emailTouched &&
+      passwordTouched
     );
-  }, [nameError, emailError, passwordError]);
+  }, [
+    nameError,
+    emailError,
+    passwordError,
+    nameTouched,
+    emailTouched,
+    passwordTouched,
+  ]);
 
   // Используем, если не надо показывать никаких ошибок пользователю
   // const isValid = useMemo(() => {
@@ -117,6 +142,7 @@ const SignUp = () => {
         onChange={onChangeName}
         placeholder={"Your name"}
         errorText={nameError}
+        onBlur={onBlurName}
       />
       <Input
         title={"Email"}
@@ -124,6 +150,7 @@ const SignUp = () => {
         onChange={onChangeEmail}
         placeholder={"Your email"}
         errorText={emailError}
+        onBlur={onBlurEmail}
       />
       <Input
         title={"Password"}
@@ -132,6 +159,7 @@ const SignUp = () => {
         placeholder={"Your password"}
         type={"password"}
         errorText={passwordError}
+        onBlur={onBlurPassword}
       />
       <Input
         title={"Confirm password"}
@@ -140,6 +168,7 @@ const SignUp = () => {
         placeholder={"Confirm password"}
         type={"password"}
         errorText={passwordError}
+        onBlur={onBlurPassword}
       />
     </FormContainer>
   );

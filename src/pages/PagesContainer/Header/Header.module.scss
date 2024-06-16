@@ -19,8 +19,11 @@
   background-color: $primary-secondary;
   color: $white;
   &::placeholder {
-    color: $gray;
+    color: rgba(255, 255, 255, 0.5);
   }
+}
+.inputContainer {
+  width: 100%;
 }
 .burgerButton {
   padding: 30px;
