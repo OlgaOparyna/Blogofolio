@@ -7,6 +7,7 @@ import SelectedPost from "./SelectedPost";
 import Success from "./Success";
 import SignUp from "./SignUp";
 import RegistrationConfirmation from "./RegistrationConfirmation";
+import Page404 from "./Page404";
 
 export enum RoutesList {
   Home = "/",
@@ -40,7 +41,7 @@ const Router = () => {
             element={<RegistrationConfirmation />}
           />
           <Route path={RoutesList.Success} element={<Success />} />
-          <Route path={RoutesList.Default} element={<div>PAGE 404</div>} />
+          <Route path={RoutesList.Default} element={<Page404/>} />
         </Route>
       </Routes>
     </BrowserRouter>
