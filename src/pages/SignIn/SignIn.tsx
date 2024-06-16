@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import classNames from "classnames";
@@ -16,6 +16,8 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const onChangeEmail = (value: string) => {
     setEmail(value);
@@ -35,6 +37,28 @@ const SignIn = () => {
   };
   const { theme } = useThemeContext();
   const isDark = theme === Theme.Dark;
+  useEffect(() => {
+    if (email.length === 0) {
+      setEmailError("Email is required field");
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password.length === 0) {
+      setPasswordError("Password is required field");
+    } else {
+      setPasswordError("");
+    }
+  }, [password]);
+
+  const isValid = useMemo(() => {
+    return (
+      emailError.length === 0 &&
+      passwordError.length === 0
+    );
+  }, [emailError, passwordError]);
   return (
     <FormContainer
       title={"Sign In"}
@@ -57,6 +81,7 @@ const SignIn = () => {
           </NavLink>
         </div>
       }
+      submitBtnDisabled={!isValid}
     >
       <Input
         title={"Email"}

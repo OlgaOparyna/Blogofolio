@@ -17,3 +17,8 @@ export type SingInResponse = {
   access: string;
   refresh: string;
 };
+export type GetUserInfoResponse = {
+  username: string;
+  email: string;
+  id: number;
+};

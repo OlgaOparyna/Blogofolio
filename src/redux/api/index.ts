@@ -19,10 +19,26 @@ const activateUser = (data:ActivateUserData)=>{
 const signInUser = (data: SignInUserData)=>{
   return API.post("/auth/jwt/create/", data)
 }
+const getUserInfo = (token: string) =>{
+  return API.get("/auth/users/me/", {}, {
+    headers:{
+      Authorization: `Bearer ${token}`,
+    }
+  })
+}
+const verifyToken = (token: string) =>{
+  return API.post("/auth/jwt/verify/", {token})
+}
+const refreshToken = (refresh: string) =>{
+  return API.post("/auth/jwt/verify/", {refresh})
+}
 export default {
   getPosts,
   getSinglePost,
   signUpUser,
   activateUser,
-  signInUser
+  signInUser,
+  getUserInfo,
+  verifyToken,
+  refreshToken
 }

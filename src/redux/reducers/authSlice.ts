@@ -4,12 +4,17 @@ import { RootState } from "../store";
 import {
   ActivateUserPayload,
   SignInUserPayload,
-  SignUpUserPayload,
+  SignUpUserPayload
 } from "./@types";
 import { ACCESS_TOKEN_KEY } from "src/utils/constants";
-
-const initialState = {
-  isLoggedIn: !!localStorage.getItem(ACCESS_TOKEN_KEY)
+import { GetUserInfoResponse } from "src/redux/sagas/@types";
+type initialType ={
+  isLoggedIn: boolean,
+  userInfo: GetUserInfoResponse | null,
+}
+const initialState: initialType = {
+  isLoggedIn: !!localStorage.getItem(ACCESS_TOKEN_KEY),
+  userInfo: null,
 };
 
 const authSlice = createSlice({
@@ -22,11 +27,16 @@ const authSlice = createSlice({
     setLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.isLoggedIn = action.payload
     },
+    getUserInfo: (_, __: PayloadAction<undefined>) => {},
+    setUserInfo: (state, action: PayloadAction<GetUserInfoResponse | null>) => {
+      state.userInfo = action.payload;
+    },
     logoutUser: (_, __: PayloadAction<undefined>) => {},
   },
 });
-export const { signUpUser, activateUser, signInUser, setLoggedIn, logoutUser } = authSlice.actions;
+export const { signUpUser, activateUser, signInUser, setLoggedIn, getUserInfo, setUserInfo, logoutUser } = authSlice.actions;
 export default authSlice.reducer;
 export const AuthSelectors = {
   getLoggedIn: (state: RootState) => state.auth.isLoggedIn,
+  getUserName: (state: RootState) => state.auth.userInfo,
 };
