@@ -1,30 +1,43 @@
-import React, { FC, ChangeEvent } from "react";
+import React, { FC, ChangeEvent, KeyboardEvent } from "react";
 import classNames from "classnames";
 import styles from "./Input.module.scss";
 
 type InputProps = {
-  title: string;
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void;
+  title?: string;
   value: string;
   onChange: (value: string) => void;
   placeholder: string;
   type?: string;
   disabled?: boolean;
   errorText?: string;
+  inputClassName?: string;
 };
-const Input: FC<InputProps> = ({ title, value,onChange, type, placeholder, disabled, errorText}) => {
+const Input: FC<InputProps> = ({
+  title,
+  value,
+  onChange,
+  type,
+  placeholder,
+  disabled,
+  errorText,
+  inputClassName,
+  onKeyDown,
+}) => {
   const onChangeText = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
   return (
     <div>
-      <label className={styles.title}>{title}</label>
+      {title && <label className={styles.title}>{title}</label>}
       <input
         value={value}
-        className={classNames(styles.input, {
+        className={classNames(styles.input, inputClassName, {
           [styles.disabledInput]: disabled,
           [styles.errorInput]: errorText,
         })}
         placeholder={placeholder}
+        onKeyDown={onKeyDown}
         onChange={onChangeText}
         disabled={disabled}
         type={type}
@@ -33,11 +46,5 @@ const Input: FC<InputProps> = ({ title, value,onChange, type, placeholder, disab
     </div>
   );
 };
-
-
-
-
-
-
 
 export default Input;

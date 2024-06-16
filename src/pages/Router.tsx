@@ -13,6 +13,7 @@ import RegistrationConfirmation from "./RegistrationConfirmation";
 import Page404 from "./Page404";
 import ResetPassword from "./ResetPassword";
 import NewPassword from "./NewPassword";
+import Search from "src/pages/Search";
 
 export enum RoutesList {
   Home = "/",
@@ -41,6 +42,7 @@ const Router = () => {
       <Routes>
         <Route path={RoutesList.Home} element={<PagesContainer />}>
           <Route path={RoutesList.Home} element={<Home />} />
+          <Route path={RoutesList.Search} element={<Search />} />
           <Route
             path={RoutesList.AddPost}
             element={

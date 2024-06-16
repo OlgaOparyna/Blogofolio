@@ -13,6 +13,7 @@ export enum CardSize {
   Large,
   Medium,
   Small,
+  Search,
 }
 export type CardListType = CardType[]
 
